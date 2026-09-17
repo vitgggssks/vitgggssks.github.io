@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>DUBX — Тестування дубляжу YouTube відео (vehsUFJQCGU)</title>
+<title>DUBX — Живий дубляж українською: Terapia Plasmática</title>
 <style>
   :root {
     --bg-window: #090d19;
@@ -111,10 +111,7 @@
     gap: 6px;
     transition: all 0.15s ease;
   }
-  .control-btn:hover {
-    background: rgba(255,255,255,0.08);
-    color: #fff;
-  }
+  .control-btn:hover { background: rgba(255,255,255,0.08); color: #fff; }
   .control-select {
     background: transparent;
     border: none;
@@ -124,10 +121,7 @@
     cursor: pointer;
     outline: none;
   }
-  .control-select option {
-    background: #0f172a;
-    color: #fff;
-  }
+  .control-select option { background: #0f172a; color: #fff; }
 
   /* Right Status */
   .titlebar-right {
@@ -188,10 +182,7 @@
     font-size: 13px;
     transition: all 0.15s ease;
   }
-  .win-btn:hover {
-    background: rgba(255, 255, 255, 0.1);
-    color: #fff;
-  }
+  .win-btn:hover { background: rgba(255, 255, 255, 0.1); color: #fff; }
 
   /* Workspace */
   .workspace {
@@ -212,11 +203,7 @@
     flex-shrink: 0;
     position: relative;
   }
-  .nav-group {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  }
+  .nav-group { display: flex; flex-direction: column; gap: 4px; }
   .nav-item {
     display: flex;
     align-items: center;
@@ -230,50 +217,19 @@
     cursor: pointer;
     transition: all 0.15s ease;
   }
-  .nav-item:hover {
-    background: rgba(255, 255, 255, 0.05);
-    color: #fff;
-  }
+  .nav-item:hover { background: rgba(255, 255, 255, 0.05); color: #fff; }
   .nav-item.active {
     background: linear-gradient(135deg, #1d4ed8, #2563eb);
     color: #fff;
     font-weight: 600;
     box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
   }
-  .nav-icon {
-    font-size: 16px;
-    width: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .sidebar-footer {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    padding-top: 14px;
-    border-top: 1px solid var(--card-border);
-  }
-  .theme-selector {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    color: var(--text-dim);
-    font-size: 12.5px;
-  }
-  .theme-select {
-    background: rgba(255,255,255,0.06);
-    border: 1px solid var(--card-border);
-    color: var(--text);
-    border-radius: 8px;
-    padding: 3px 8px;
-    font-size: 12px;
-    outline: none;
-  }
-  .version-tag {
-    font-size: 11px;
-    color: var(--text-muted);
-  }
+  .nav-icon { font-size: 16px; width: 20px; display: flex; align-items: center; justify-content: center; }
+  .sidebar-footer { display: flex; flex-direction: column; gap: 12px; padding-top: 14px; border-top: 1px solid var(--card-border); }
+  .theme-selector { display: flex; align-items: center; justify-content: space-between; color: var(--text-dim); font-size: 12.5px; }
+  .theme-select { background: rgba(255,255,255,0.06); border: 1px solid var(--card-border); color: var(--text); border-radius: 8px; padding: 3px 8px; font-size: 12px; outline: none; }
+  .theme-select option { background: #0f172a; }
+  .version-tag { font-size: 11px; color: var(--text-muted); }
 
   /* Toast */
   .toast-popup {
@@ -317,7 +273,7 @@
     box-shadow: 0 8px 24px rgba(0,0,0,0.3);
   }
 
-  /* Hero Live Dubbing Card */
+  /* Hero Card */
   .hero-card {
     display: flex;
     gap: 24px;
@@ -326,8 +282,8 @@
                 var(--card-bg);
   }
   .video-preview {
-    width: 320px;
-    height: 190px;
+    width: 330px;
+    height: 195px;
     border-radius: 14px;
     overflow: hidden;
     position: relative;
@@ -361,11 +317,7 @@
     letter-spacing: -0.3px;
     margin: 0;
   }
-  .hero-sub {
-    color: var(--text-dim);
-    font-size: 12.5px;
-    margin-top: 4px;
-  }
+  .hero-sub { color: var(--text-dim); font-size: 12.5px; margin-top: 4px; }
   .floating-pill {
     background: rgba(15, 23, 42, 0.85);
     border: 1px solid rgba(255, 255, 255, 0.14);
@@ -376,7 +328,6 @@
     gap: 8px;
     font-size: 12px;
     color: var(--text-dim);
-    cursor: grab;
   }
 
   /* Language Selector */
@@ -417,13 +368,8 @@
     box-shadow: 0 4px 18px rgba(37, 99, 235, 0.45);
     transition: all 0.2s ease;
   }
-  .btn-start-dub:hover {
-    background: linear-gradient(135deg, #1d4ed8, #2563eb);
-    transform: translateY(-1px);
-  }
-  .btn-start-dub.active {
-    background: linear-gradient(135deg, #dc2626, #ef4444);
-  }
+  .btn-start-dub:hover { background: linear-gradient(135deg, #1d4ed8, #2563eb); transform: translateY(-1px); }
+  .btn-start-dub.active { background: linear-gradient(135deg, #dc2626, #ef4444); }
 
   /* Visualizers */
   .visualizers-card {
@@ -451,7 +397,7 @@
     transition: height 0.08s ease;
   }
 
-  /* Dialogue / Subtitles Stream Card */
+  /* Live Dialogue / Subtitles Stream Card */
   .dialogue-card {
     display: flex;
     flex-direction: column;
@@ -508,9 +454,8 @@
     color: #fff;
     flex-shrink: 0;
   }
-  .avatar-blue { background: linear-gradient(135deg, #2563eb, #3b82f6); }
+  .avatar-pink { background: linear-gradient(135deg, #ec4899, #f43f5e); }
   .avatar-purple { background: linear-gradient(135deg, #7c3aed, #a855f7); }
-  .avatar-green { background: linear-gradient(135deg, #059669, #10b981); }
   .dialogue-meta { width: 170px; flex-shrink: 0; }
   .speaker-name { font-weight: 700; font-size: 13px; }
   .speaker-pill {
@@ -523,8 +468,8 @@
   }
   .speaker-voice { color: #93c5fd; font-size: 10.5px; margin-left: 2px; }
   .dialogue-text-block { flex: 1; display: flex; flex-direction: column; gap: 4px; }
-  .text-orig { color: var(--text); font-size: 13.5px; line-height: 1.4; }
-  .text-trans { color: #93c5fd; font-size: 13px; line-height: 1.4; font-weight: 500; }
+  .text-orig { color: var(--text-dim); font-size: 12.5px; line-height: 1.4; font-style: italic; }
+  .text-trans { color: #e0f2fe; font-size: 13.5px; line-height: 1.45; font-weight: 500; }
   .dialogue-time { color: var(--text-muted); font-size: 11.5px; font-family: monospace; flex-shrink: 0; }
 
   /* Right Panel */
@@ -606,7 +551,7 @@
     <div class="titlebar-brand">
       <div class="titlebar-logo">DX</div>
       <div class="titlebar-name">DUBX Desktop</div>
-      <div class="titlebar-sub">Тестування: Політичний репортаж Канади (YouTube vehsUFJQCGU)</div>
+      <div class="titlebar-sub">Живий дубляж українською: Terapia Plasmática (YouTube T4Np35WMGrU)</div>
     </div>
 
     <!-- Center Quick Controls -->
@@ -618,7 +563,7 @@
       <div style="display:flex;align-items:center;gap:6px;">
         <span>🎬</span>
         <select class="control-select" id="select-source">
-          <option>YouTube: vehsUFJQCGU (English)</option>
+          <option>YouTube Live: T4Np35WMGrU (Português)</option>
           <option>Системний звук</option>
           <option>Мікрофон (Default)</option>
         </select>
@@ -628,7 +573,7 @@
         <span>🇺🇦</span>
         <select class="control-select">
           <option>Українська (Neural Дубляж)</option>
-          <option>English (Source)</option>
+          <option>Português (Оригінал)</option>
         </select>
       </div>
     </div>
@@ -641,7 +586,7 @@
       </div>
       <div class="status-pill pill-latency">
         <span>⚡</span>
-        <span id="latency-text">0.72 c</span>
+        <span id="latency-text">0.74 c</span>
       </div>
       <div class="window-actions">
         <button class="win-btn" onclick="toggleFullscreen()" title="Повний екран">□</button>
@@ -660,15 +605,15 @@
           <span class="nav-icon">🏠</span>
           <span>Головна</span>
         </a>
-        <a class="nav-item" onclick="alert('Режим стрімів активний')">
+        <a class="nav-item" onclick="alert('Режим онлайн-стрімів')">
           <span class="nav-icon">((•))</span>
           <span>Онлайн</span>
         </a>
-        <a class="nav-item" onclick="alert('Режим обробки файлів')">
+        <a class="nav-item" onclick="alert('Обробка медіафайлів')">
           <span class="nav-icon">📁</span>
           <span>Файли</span>
         </a>
-        <a class="nav-item" onclick="alert('Конфігурація моделей Whisper + DeepSeek/Neural TTS')">
+        <a class="nav-item" onclick="alert('Параметри розпізнавання Whisper pt-BR + Neural TTS')">
           <span class="nav-icon">⚙️</span>
           <span>Налаштування</span>
         </a>
@@ -682,8 +627,8 @@
       <div class="toast-popup" id="toast-dub-ready">
         <div class="toast-icon">✨</div>
         <div class="toast-body">
-          <div class="toast-title">Відео завантажено!</div>
-          <div class="toast-desc">YouTube потік синхронізовано з нейромережею дубляжу.</div>
+          <div class="toast-title">Прямий етер підключено!</div>
+          <div class="toast-desc">Португальський потік синхронізовано з українським дубляжем.</div>
         </div>
         <button class="toast-close" onclick="document.getElementById('toast-dub-ready').style.display='none'">✕</button>
       </div>
@@ -706,15 +651,15 @@
       <!-- HERO CARD WITH YOUTUBE PLAYER -->
       <div class="ui-card hero-card">
         <div class="video-preview">
-          <div class="video-badge-live">YOUTUBE</div>
-          <iframe id="yt-player" width="100%" height="100%" src="https://www.youtube-nocookie.com/embed/vehsUFJQCGU?enablejsapi=1&autoplay=1&mute=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="width:100%;height:100%;border-radius:14px;border:none;"></iframe>
+          <div class="video-badge-live">YOUTUBE LIVE</div>
+          <iframe id="yt-player" width="100%" height="100%" src="https://www.youtube-nocookie.com/embed/T4Np35WMGrU?enablejsapi=1&autoplay=1&mute=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="width:100%;height:100%;border-radius:14px;border:none;"></iframe>
         </div>
 
         <div class="hero-details">
           <div class="hero-header">
             <div>
-              <h2 class="hero-title">Poilievre & CPC Leadership (Тест DUBX)</h2>
-              <div class="hero-sub">Розпізнавання англійського мовлення мовців + переклад українською</div>
+              <h2 class="hero-title">Live: Terapia Plasmática (Плазмова терапія)</h2>
+              <div class="hero-sub">PIC-RAS · Розпізнавання португальської мови (pt-BR) + переклад солов'їною</div>
             </div>
 
             <div class="floating-pill" title="Оверлей-віджет">
@@ -729,11 +674,11 @@
           <!-- Language Selection -->
           <div class="lang-select-row">
             <div class="lang-box">
-              <label class="lang-label">З мови відео</label>
+              <label class="lang-label">З мови етеру</label>
               <div class="lang-pill-select">
                 <div style="display:flex;align-items:center;gap:8px;">
-                  <span>🇬🇧</span>
-                  <span>English (Canada)</span>
+                  <span>🇧🇷</span>
+                  <span>Português (Brasil)</span>
                 </div>
                 <span>✓</span>
               </div>
@@ -746,7 +691,7 @@
               <div class="lang-pill-select">
                 <div style="display:flex;align-items:center;gap:8px;">
                   <span>🇺🇦</span>
-                  <span>Українська (Живий дубляж)</span>
+                  <span>Українська (Живий нейродубляж)</span>
                 </div>
                 <span>✓</span>
               </div>
@@ -764,12 +709,12 @@
       <!-- VISUALIZERS -->
       <div class="ui-card visualizers-card">
         <div class="vis-column">
-          <div class="vis-label">Вхідне аудіо (YouTube відеопотік)</div>
+          <div class="vis-label">Вхідне аудіо (Португальський потік YouTube)</div>
           <div class="vis-canvas-wrap" id="vis-input-bars"></div>
         </div>
 
         <div class="vis-column">
-          <div class="vis-label">Перекладене аудіо (Український дубляж)</div>
+          <div class="vis-label">Перекладене аудіо (Український синхронний дубляж)</div>
           <div class="vis-canvas-wrap" id="vis-output-bars"></div>
         </div>
       </div>
@@ -777,7 +722,7 @@
       <!-- LIVE DIALOGUE STREAM -->
       <div class="ui-card dialogue-card">
         <div class="dialogue-header">
-          <div class="dialogue-title">Розпізнані репліки та дубляж у реальному часі</div>
+          <div class="dialogue-title">Розпізнані репліки та дубляж у реальному часі (Португальська → Українська)</div>
           <div class="badge-auto">
             <span>✨</span>
             <span>Нейромережевий переклад (STT + LLM)</span>
@@ -803,20 +748,20 @@
 
         <div class="status-list">
           <div class="status-row">
-            <div class="status-left"><span class="dot-green"></span><span>Захоплення відео</span></div>
-            <div class="status-right"><span>YouTube API</span></div>
+            <div class="status-left"><span class="dot-green"></span><span>Захоплення стріму</span></div>
+            <div class="status-right"><span>YouTube Live</span></div>
           </div>
           <div class="status-row">
             <div class="status-left"><span class="dot-green"></span><span>Розпізнавання (STT)</span></div>
-            <div class="status-right"><span>Whisper Fast</span></div>
+            <div class="status-right"><span>Whisper pt-BR</span></div>
           </div>
           <div class="status-row">
             <div class="status-left"><span class="dot-green"></span><span>Переклад (LLM)</span></div>
-            <div class="status-right"><span>Низька затримка</span></div>
+            <div class="status-right"><span>PT → UK</span></div>
           </div>
           <div class="status-row">
             <div class="status-left"><span class="dot-green"></span><span>Синтез (TTS)</span></div>
-            <div class="status-right"><span>3 спікери</span></div>
+            <div class="status-right"><span>2 жіночі голоси</span></div>
           </div>
         </div>
 
@@ -824,7 +769,7 @@
           <div style="display:flex;justify-content:space-between;font-size:11.5px;color:var(--text-muted);">
             <span>Загальна затримка</span>
           </div>
-          <div class="latency-val" id="side-latency">0.72 c</div>
+          <div class="latency-val" id="side-latency">0.74 c</div>
           <div class="latency-bar"><div class="latency-fill"></div></div>
           <div class="latency-badge">⚡ Відмінно (< 1.0 с)</div>
         </div>
@@ -835,10 +780,10 @@
         <div class="panel-section-title">Баланс звуку</div>
         <div class="vol-row">
           <div class="vol-header">
-            <span>🔊 Оригінал (YouTube)</span>
-            <span id="vol-in-val">30%</span>
+            <span>🔊 Оригінал (Португальська)</span>
+            <span id="vol-in-val">25%</span>
           </div>
-          <input type="range" min="0" max="100" value="30" class="slider-range" oninput="document.getElementById('vol-in-val').innerText = this.value + '%'">
+          <input type="range" min="0" max="100" value="25" class="slider-range" oninput="document.getElementById('vol-in-val').innerText = this.value + '%'">
         </div>
         <div class="vol-row">
           <div class="vol-header">
@@ -854,40 +799,27 @@
         <div class="panel-section-title">Розпізнані мовці (Діаризація)</div>
 
         <div class="speaker-dynamic-row">
-          <div class="speaker-dyn-avatar avatar-blue">🎙️</div>
+          <div class="speaker-dyn-avatar avatar-pink">👩‍⚕️</div>
           <div class="dyn-info">
             <div class="dyn-name">
-              <span>Ведучий новин</span>
-              <span id="dyn-val-1">75%</span>
+              <span>Б’янка (Ведуча / Інтерн)</span>
+              <span id="dyn-val-1">80%</span>
             </div>
             <div class="dyn-bar">
-              <div class="dyn-fill" id="dyn-bar-1" style="width:75%;background:#3b82f6;"></div>
+              <div class="dyn-fill" id="dyn-bar-1" style="width:80%;background:#ec4899;"></div>
             </div>
           </div>
         </div>
 
         <div class="speaker-dynamic-row">
-          <div class="speaker-dyn-avatar avatar-purple">👔</div>
+          <div class="speaker-dyn-avatar avatar-purple">👩‍🔬</div>
           <div class="dyn-info">
             <div class="dyn-name">
-              <span>П’єр Пуальєвр (Лідер CPC)</span>
-              <span id="dyn-val-2">85%</span>
+              <span>Габріела (Психолог / Експерт)</span>
+              <span id="dyn-val-2">90%</span>
             </div>
             <div class="dyn-bar">
-              <div class="dyn-fill" id="dyn-bar-2" style="width:85%;background:#a855f7;"></div>
-            </div>
-          </div>
-        </div>
-
-        <div class="speaker-dynamic-row">
-          <div class="speaker-dyn-avatar avatar-green">💼</div>
-          <div class="dyn-info">
-            <div class="dyn-name">
-              <span>Джеймс Мур (Ексміністр)</span>
-              <span id="dyn-val-3">60%</span>
-            </div>
-            <div class="dyn-bar">
-              <div class="dyn-fill" id="dyn-bar-3" style="width:60%;background:#10b981;"></div>
+              <div class="dyn-fill" id="dyn-bar-2" style="width:90%;background:#a855f7;"></div>
             </div>
           </div>
         </div>
@@ -913,14 +845,14 @@
   <!-- 3. BOTTOM BAR -->
   <footer class="bottom-bar">
     <div class="bottom-left">
-      <div class="bottom-item"><span class="dot-green"></span><span>YouTube Stream Connected</span></div>
-      <div class="bottom-item"><span>⏱</span><span>Пам'ять 44%</span></div>
-      <div class="bottom-item"><span>💻</span><span>CPU 11%</span></div>
-      <div class="bottom-item"><span>🎮</span><span>GPU 7%</span></div>
+      <div class="bottom-item"><span class="dot-green"></span><span>YouTube Live: Terapia Plasmática</span></div>
+      <div class="bottom-item"><span>⏱</span><span>Пам'ять 46%</span></div>
+      <div class="bottom-item"><span>💻</span><span>CPU 13%</span></div>
+      <div class="bottom-item"><span>🎮</span><span>GPU 9%</span></div>
     </div>
     <div style="color:#3b82f6;font-size:14px;letter-spacing:2px;">·|||·</div>
     <div>
-      <button class="btn-details" onclick="alert('Відео: vehsUFJQCGU\nМова джерела: en-CA\nМова виводу: uk-UA\nКонвеєр: Whisper Streaming -> LLM Context SBD -> Piper Neural TTS')">Деталі конвеєра</button>
+      <button class="btn-details" onclick="alert('Відео: T4Np35WMGrU\nМова джерела: pt-BR\nМова виводу: uk-UA\nЗатримка ядра: 48 мс')">Деталі конвеєра</button>
     </div>
   </footer>
 
@@ -1003,63 +935,55 @@
     }
   }
 
-  // REAL TRANSCRIPTS FROM YOUTUBE VIDEO vehsUFJQCGU
+  // REAL TRANSCRIPTS FROM YOUTUBE STREAM T4Np35WMGrU (PORTUGUESE -> UKRAINIAN)
   const realQuotes = [
     {
-      time: '00:02',
-      spk: 'Ведучий новин',
-      voice: 'Голос: Олексій',
-      cls: 'avatar-blue',
-      orig: 'The Conservative Party of Canada holding a big meeting in British Columbia this week in the interior in Penticton.',
-      trans: 'Консервативна партія Канади проводить масштабну зустріч у Британській Колумбії цього тижня в місті Пентіктон.'
+      time: '00:24',
+      spk: 'Б’янка (Ведуча)',
+      voice: 'Голос: Олена (Сопрано)',
+      cls: 'avatar-pink',
+      orig: 'Boa noite pessoal, tudo bem com vocês? Eu espero que todos estejam bem. Bem-vindos à nossa terceira live do ano!',
+      trans: 'Доброго вечора всім, як ваші справи? Сподіваюся, у всіх усе чудово. Вітаємо вас на нашому третьому прямому етері цього року!'
     },
     {
-      time: '00:07',
-      spk: 'Ведучий новин',
-      voice: 'Голос: Олексій',
-      cls: 'avatar-blue',
-      orig: 'Pierre Poilievre is trying to deal with ongoing questions about his leadership. Signs of division in the party as well.',
-      trans: 'П’єр Пуальєвр намагається дати відповідь на постійні запитання щодо свого лідерства. Також є ознаки розколу в партії.'
-    },
-    {
-      time: '00:14',
-      spk: 'П’єр Пуальєвр',
-      voice: 'Голос: Сергій (Баритон)',
-      cls: 'avatar-purple',
-      orig: 'The last year and a half you were promised change... But where are the results for you? At the gas pump, on your grocery bill, with your rent or mortgage payment.',
-      trans: 'Останні півтора року вам обіцяли зміни... Але де ж результати для вас? На автозаправці, у чеках за продукти, у платіжках за оренду чи іпотеку!'
-    },
-    {
-      time: '00:25',
-      spk: 'П’єр Пуальєвр',
-      voice: 'Голос: Сергій (Баритон)',
-      cls: 'avatar-purple',
-      orig: 'Inflationary deficits, high taxes, and red tape are costing you. Food prices are outrageous. We need to put Canada first in this time more than ever.',
-      trans: 'Інфляційний дефіцит, високі податки та бюрократія б’ють по вашій кишені. Ціни на їжу обурливі. Зараз, як ніколи, ми мусимо поставити Канаду на перше місце!'
+      time: '00:31',
+      spk: 'Б’янка (Ведуча)',
+      voice: 'Голос: Олена (Сопрано)',
+      cls: 'avatar-pink',
+      orig: 'Então a nossa temática hoje vai ser a terapia plasmática. Eu me chamo Bianca, sou acadêmica do oitavo semestre de enfermagem.',
+      trans: 'Сьогоднішня наша тема — плазмова терапія. Мене звати Б’янка, я студентка восьмого семестру медсестринства.'
     },
     {
       time: '00:41',
-      spk: 'П’єр Пуальєвр',
-      voice: 'Голос: Сергій (Баритон)',
-      cls: 'avatar-purple',
-      orig: 'The decisions for our country, though, must not be made in Washington, Beijing, or Brussels, but by Canadians here at home.',
-      trans: 'Рішення для нашої країни мають ухвалюватися не у Вашингтоні, Пекіні чи Брюсселі, а канадцями тут, удома.'
+      spk: 'Б’янка (Ведуча)',
+      voice: 'Голос: Олена (Сопрано)',
+      cls: 'avatar-pink',
+      orig: 'A gente tá muito feliz hoje em ter a nossa convidada a Gabriela. A Gabriela vai falar um pouquinho pra gente sobre terapia plasmática.',
+      trans: 'Ми надзвичайно раді привітати сьогодні нашу гостю Габріелу, яка детально розповість нам про метод плазмової терапії.'
     },
     {
       time: '01:06',
-      spk: 'Ведучий новин',
-      voice: 'Голос: Олексій',
-      cls: 'avatar-blue',
-      orig: 'Let’s bring in former Conservative Cabinet Minister James Moore, represented a riding in British Columbia for many years.',
-      trans: 'Запрошуємо до етеру колишнього міністра уряду Джеймса Мура, який багато років представляв округ у Британській Колумбії.'
+      spk: 'Б’янка (Ведуча)',
+      voice: 'Голос: Олена (Сопрано)',
+      cls: 'avatar-pink',
+      orig: 'A Gabriela é psicóloga clínica especializada na abordagem junguiana e técnicas corporais, terapeuta reikiana e terapeuta plasmática.',
+      trans: 'Габріела — клінічний психолог, спеціалістка з юнгіанського підходу та тілесних технік, майстер рейкі та сертифікований плазмотерапевт.'
     },
     {
-      time: '01:22',
-      spk: 'Джеймс Мур',
-      voice: 'Голос: Михайло',
-      cls: 'avatar-green',
-      orig: 'When you have an election that happens in an outcome that is unexpected, there is always going to be frustration. But Poilievre is firmly in place as leader.',
-      trans: 'Коли результати виборів стають неочікуваними, завжди виникає певне розчарування. Проте Пуальєвр міцно утримує лідерство в партії.'
+      time: '02:23',
+      spk: 'Габріела (Експерт)',
+      voice: 'Голос: Тетяна (М’який тембр)',
+      cls: 'avatar-purple',
+      orig: 'Obrigada Bianca! Boa noite a todos e todas, é um prazer estar aqui falando sobre a terapia plasmática para um projeto de práticas integrativas.',
+      trans: 'Дякую, Б’янко! Доброго вечора всім присутнім. Мені надзвичайно приємно бути тут і розповідати про плазмову терапію в межах проєкту інтегративних практик.'
+    },
+    {
+      time: '02:37',
+      spk: 'Габріела (Експерт)',
+      voice: 'Голос: Тетяна (М’який тембр)',
+      cls: 'avatar-purple',
+      orig: 'Eu queria começar explicando um pouco de como é a terapia plasmática através da física quântica, porque ela é uma técnica da física quântica aplicada à saúde e ao bem-estar.',
+      trans: 'Я хотіла б розпочати з пояснення плазмової терапії крізь призму квантової фізики, адже це технологія квантової фізики, застосована для здоров’я та гармонійного самопочуття.'
     }
   ];
 
@@ -1076,7 +1000,7 @@
       <div class="dialogue-meta">
         <div class="speaker-name">${item.spk}</div>
         <div class="speaker-pill">
-          <span>🇬🇧 EN</span>
+          <span>🇧🇷 PT</span>
           <span class="speaker-voice">${item.voice}</span>
         </div>
       </div>
