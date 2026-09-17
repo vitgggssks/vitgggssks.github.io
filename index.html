@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>DUBX — Дубляж у реальному часі | Завантаження APK та ПК</title>
-<meta name="description" content="Офіційна сторінка DUBX: дубляж аудіо та відео в реальному часі на базі Rust та Flutter. Завантаження APK для Android, Windows, macOS, Linux.">
+<title>DUBX — Ультрашвидкий дубляж у реальному часі</title>
+<meta name="description" content="Офіційний сайт проєкту DUBX: живий дубляж системного аудіо, онлайн-відео та файлів на базі Rust та Flutter.">
 <style>
   :root {
     --bg: #080b14;
@@ -15,6 +15,7 @@
     --accent-blue: #5b8cff;
     --accent-purple: #a45bff;
     --accent-cyan: #22d3ee;
+    --accent-green: #34d399;
   }
   * { box-sizing: border-box; }
   body {
@@ -23,11 +24,12 @@
     color: var(--text);
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     line-height: 1.5;
-    background-image: radial-gradient(800px 500px at 20% -10%, rgba(91,140,255,0.12) 0%, transparent 60%),
-                      radial-gradient(700px 450px at 80% 10%, rgba(164,91,255,0.10) 0%, transparent 60%);
+    background-image: radial-gradient(900px 550px at 15% -10%, rgba(91,140,255,0.14) 0%, transparent 60%),
+                      radial-gradient(800px 500px at 85% 15%, rgba(164,91,255,0.12) 0%, transparent 60%);
+    min-height: 100vh;
   }
   .container {
-    max-width: 920px;
+    max-width: 960px;
     margin: 0 auto;
     padding: 36px 20px 64px;
   }
@@ -46,25 +48,25 @@
     gap: 16px;
   }
   .logo {
-    width: 52px;
-    height: 52px;
-    border-radius: 14px;
+    width: 48px;
+    height: 48px;
+    border-radius: 13px;
     background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
     display: flex;
     align-items: center;
     justify-content: center;
     font-weight: 800;
-    font-size: 22px;
+    font-size: 20px;
     box-shadow: 0 8px 24px rgba(91,140,255,0.3);
   }
   .brand-title {
-    font-size: 26px;
+    font-size: 24px;
     font-weight: 800;
-    letter-spacing: -0.4px;
+    letter-spacing: -0.3px;
   }
   .brand-subtitle {
     color: var(--text-dim);
-    font-size: 13.5px;
+    font-size: 13px;
   }
   .nav-tabs {
     display: flex;
@@ -87,176 +89,179 @@
   }
   .nav-btn:hover {
     background: rgba(255,255,255,0.1);
-    border-color: rgba(255,255,255,0.2);
+    border-color: rgba(255,255,255,0.22);
     transform: translateY(-1px);
   }
-  .nav-btn.active {
-    background: linear-gradient(135deg, rgba(91,140,255,0.25), rgba(164,91,255,0.25));
-    border-color: rgba(91,140,255,0.5);
+  .nav-btn.primary {
+    background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+    border-color: transparent;
     color: #fff;
   }
-  .domain-badge {
-    margin-top: 24px;
-    padding: 14px 18px;
-    border-radius: 14px;
-    background: rgba(34, 211, 238, 0.08);
-    border: 1px solid rgba(34, 211, 238, 0.3);
-    color: #a5f3fc;
-    font-size: 13.5px;
-    display: flex;
+  .hero {
+    padding: 56px 0 36px;
+    text-align: center;
+  }
+  .hero-badge {
+    display: inline-flex;
     align-items: center;
-    justify-content: space-between;
+    gap: 8px;
+    padding: 6px 14px;
+    background: rgba(91,140,255,0.12);
+    border: 1px solid rgba(91,140,255,0.3);
+    border-radius: 20px;
+    color: #93b4ff;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 20px;
+  }
+  .hero-title {
+    font-size: 42px;
+    font-weight: 800;
+    letter-spacing: -1px;
+    line-height: 1.2;
+    margin: 0 0 16px;
+    background: linear-gradient(135deg, #fff 40%, #9ab3e8 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .hero-desc {
+    color: var(--text-dim);
+    font-size: 16.5px;
+    max-width: 680px;
+    margin: 0 auto 32px;
+    line-height: 1.6;
+  }
+  .hero-actions {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
     flex-wrap: wrap;
-    gap: 12px;
   }
-  .domain-link {
-    color: #38bdf8;
+  .btn-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+    color: #fff;
     font-weight: 700;
+    font-size: 15px;
+    padding: 14px 28px;
+    border-radius: 12px;
     text-decoration: none;
-    background: rgba(56, 189, 248, 0.15);
-    padding: 4px 10px;
-    border-radius: 8px;
-    border: 1px solid rgba(56, 189, 248, 0.3);
+    box-shadow: 0 6px 20px rgba(91,140,255,0.3);
+    transition: all 0.2s ease;
   }
-  .notice-banner {
-    margin-top: 20px;
-    padding: 14px 18px;
-    border-radius: 14px;
-    background: rgba(255,196,0,0.08);
-    border: 1px solid rgba(255,196,0,0.3);
-    color: #ffd97a;
-    font-size: 13.5px;
+  .btn-cta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 26px rgba(91,140,255,0.45);
+  }
+  .btn-cta-secondary {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    box-shadow: none;
+  }
+  .btn-cta-secondary:hover {
+    background: rgba(255,255,255,0.1);
+    box-shadow: none;
+  }
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin: 36px 0;
+  }
+  .stat-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    padding: 20px;
+    text-align: center;
+    backdrop-filter: blur(10px);
+  }
+  .stat-value {
+    font-size: 26px;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -0.5px;
+  }
+  .stat-label {
+    color: var(--text-dim);
+    font-size: 13px;
+    margin-top: 4px;
   }
   .section-title {
-    font-size: 20px;
-    font-weight: 700;
-    margin: 32px 0 16px;
+    font-size: 22px;
+    font-weight: 800;
+    margin: 48px 0 20px;
     display: flex;
     align-items: center;
     gap: 10px;
   }
-  .grid {
-    display: flex;
+  .showcase-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
     gap: 20px;
-    flex-wrap: wrap;
   }
-  .card {
-    flex: 1 1 380px;
+  @media (max-width: 500px) {
+    .showcase-grid { grid-template-columns: 1fr; }
+    .hero-title { font-size: 32px; }
+  }
+  .showcase-card {
     background: var(--card-bg);
     border: 1px solid var(--card-border);
     border-radius: 18px;
-    padding: 22px;
-    backdrop-filter: blur(10px);
+    padding: 26px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     transition: transform 0.2s ease, border-color 0.2s ease;
   }
-  .card:hover {
+  .showcase-card:hover {
     border-color: rgba(255,255,255,0.22);
     transform: translateY(-2px);
   }
-  .card-title {
-    font-size: 17px;
+  .showcase-title {
+    font-size: 19px;
     font-weight: 700;
+    margin-bottom: 8px;
   }
-  .card-meta {
+  .showcase-desc {
     color: var(--text-dim);
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 20px;
+  }
+  .pipeline-box {
+    background: rgba(0,0,0,0.4);
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    padding: 22px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
     font-size: 12.5px;
-    margin-top: 4px;
-  }
-  .btn-download {
-    display: block;
-    margin-top: 16px;
-    text-align: center;
-    text-decoration: none;
-    background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
-    color: #fff;
-    font-weight: 700;
-    font-size: 14.5px;
-    padding: 13px 20px;
-    border-radius: 12px;
-    box-shadow: 0 4px 16px rgba(91,140,255,0.25);
-    transition: opacity 0.2s ease;
-  }
-  .btn-download:hover {
-    opacity: 0.92;
-  }
-  .btn-secondary {
-    background: rgba(255,255,255,0.10);
-    box-shadow: none;
-  }
-  .btn-secondary:hover {
-    background: rgba(255,255,255,0.16);
-  }
-  .qr-box {
-    display: flex;
-    gap: 16px;
-    align-items: center;
-    margin-top: 18px;
-    padding-top: 16px;
-    border-top: 1px solid var(--card-border);
-  }
-  .qr-img {
-    width: 120px;
-    height: 120px;
-    border-radius: 12px;
-    background: #fff;
-    padding: 6px;
-    flex-shrink: 0;
-  }
-  .qr-info {
-    color: var(--text-dim);
-    font-size: 12.5px;
-    line-height: 1.5;
-  }
-  .sha-box {
-    margin-top: 14px;
-    padding: 8px 12px;
-    background: rgba(0,0,0,0.3);
-    border-radius: 8px;
-    border: 1px solid rgba(255,255,255,0.06);
-    color: #7d8aa8;
-    font-size: 11px;
-    font-family: monospace;
-    word-break: break-all;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 8px;
+    color: #9cb2de;
+    line-height: 1.8;
+    overflow-x: auto;
   }
   .desktop-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 14px;
-    margin-top: 16px;
+    gap: 16px;
   }
   .desktop-card {
     background: var(--card-bg);
     border: 1px solid var(--card-border);
     border-radius: 14px;
-    padding: 16px;
+    padding: 18px;
     display: flex;
     align-items: center;
     justify-content: space-between;
   }
-  .info-box {
-    margin-top: 28px;
-    background: var(--card-bg);
-    border: 1px solid var(--card-border);
-    border-radius: 16px;
-    padding: 22px;
-  }
-  ol {
-    margin: 8px 0 0;
-    padding-left: 20px;
-    color: #c3cbe0;
-    font-size: 14px;
-    line-height: 1.7;
-  }
   .footer {
-    margin-top: 48px;
+    margin-top: 56px;
     padding-top: 24px;
     border-top: 1px solid var(--card-border);
     color: var(--text-dim);
-    font-size: 12.5px;
+    font-size: 13px;
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
@@ -277,112 +282,108 @@
       </div>
     </div>
     <nav class="nav-tabs">
-      <a href="#" class="nav-btn active">⬇ Завантаження</a>
-      <a href="demo.html" class="nav-btn">🖥️ Інтерактивне демо UI</a>
+      <a href="demo.html" class="nav-btn primary">🖥️ Інтерактивне демо UI</a>
       <a href="screenshots.html" class="nav-btn">📱 Мобільні екрани</a>
+      <a href="#pipeline" class="nav-btn">⚡ Конвеєр</a>
+      <a href="#desktop" class="nav-btn">💻 Десктоп</a>
     </nav>
   </header>
 
-  <!-- PERMANENT DOMAIN BADGE -->
-  <div class="domain-badge">
-    <div>
-      🌐 <b>Офіційний безкоштовний домен Vercel активовано:</b>
-      <span style="margin-left:6px;color:#e0f2fe">сайт тепер постійно доступний за адресою:</span>
+  <!-- HERO SECTION -->
+  <section class="hero">
+    <div class="hero-badge">⚡ Rust Core + Flutter Frontend · Ultra-Low Latency</div>
+    <h1 class="hero-title">Живий дубляж звуку та відео у реальному часі</h1>
+    <p class="hero-desc">
+      DUBX перехоплює системний аудіопотік або онлайн-відео, миттєво розпізнає мову, розділяє мовців,
+      перекладає та синтезує природний голос у віртуальний аудіопристрій із мінімальною затримкою.
+    </p>
+    <div class="hero-actions">
+      <a href="demo.html" class="btn-cta">🖥️ Відкрити інтерактивне демо UI</a>
+      <a href="screenshots.html" class="btn-cta btn-cta-secondary">📱 Огляд мобільних екранів (Android)</a>
     </div>
-    <div>
-      <a href="https://dubx-app.vercel.app" class="domain-link">https://dubx-app.vercel.app</a>
+  </section>
+
+  <!-- STATS -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-value" style="color:var(--accent-blue)">0.5 – 1.0 с</div>
+      <div class="stat-label">Цільова затримка дубляжу</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value" style="color:var(--accent-purple)">19 мов</div>
+      <div class="stat-label">Підтримка перекладу</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value" style="color:var(--accent-cyan)">До 6 мовців</div>
+      <div class="stat-label">Індивідуальні тембри голосу</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value" style="color:var(--accent-green)">Rust + Flutter</div>
+      <div class="stat-label">Нативна швидкодія ядра</div>
     </div>
   </div>
 
-  <!-- NOTICE BANNER -->
-  <div class="notice-banner">
-    <b>💡 Демо-збірка для Android:</b> інтерфейс, онлайн-плеєр із субтитрами спікерів і вибір файлів повністю працюють.
-    Живий дубляж системного звуку на Android ще розробляється (потрібен MediaProjection).
-    Повноцінний живий дубляж доступний у збірках для Windows, macOS і Linux.
-  </div>
+  <!-- SHOWCASE SECTION -->
+  <div class="section-title">✨ Інтерактивні компоненти проєкту</div>
+  <div class="showcase-grid">
 
-  <!-- ANDROID SECTION -->
-  <div class="section-title">📱 Завантаження DUBX для Android (APK v0.3.5)</div>
-  <div class="grid">
-
-    <!-- ARM64 -->
-    <div class="card">
-      <div class="card-title">Для сучасних телефонів</div>
-      <div class="card-meta">arm64-v8a · 19.9 МБ · майже всі пристрої з 2017 року (Android 7.0+)</div>
-      <a href="DUBX-0.3.5-android-arm64-v8a.apk" download class="btn-download">
-        ⬇ Завантажити APK (arm64)
-      </a>
-      <div class="qr-box">
-        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXIAAAFyAQAAAADAX2ykAAAC1klEQVR4nO2cQYrcMBBFX0WGWdo36KPYN8iRQo6UG9hHyQEC9nJA5mchya1eZJohHtOC0qIZt9+ioKjSry/1mPjMWr59CgfnnXf+S/nN8prYDdjLs3WwDFA9vmL8zj/hgyQpNWqbAOglad2NcQVGSdJ6VTzOn83n4tzepJ8DaN46WG4Rm4BU4tOF8Th/Ft89PO0mCDL6P6ZxRbZYiFfG4/xX8kGMK2gmiGXYTXMfP+C/Oh7n/5dP9VuGpN20TCEadJFx3Un7L72A7Yp4nD+fz4IZCLIfKymrNm1vsmnrYDEzs+GqeJw/j+9ycQKw7aZlCEAfEdtuLLdIbYG8WvzOP+W3Lk+4U69cv7Ab9FL99qp4nD+RR1qD0kfSUr2U9FVeQZBEVpDmV4vf+ScrWxtFJmsmSHN6EbO+GtegZHJ4fhvjU34lRTT3UurK45qrVlohW1e957c9PvXnqkyTNZlKt1Ry/vD+3B6f23D+655a0Nw/1LTvvy3yufmOVZKLyJLi8TYn2fPbJp+ar1ZgGbJ0vp8PppWcrNeM3/l/rtyUV6qunOR0Vs3xyL735/b4rJCrDMLRrkPZevtDbr1a/M4/WQ/1m5NchiQOEe3zb9v8MgRpZjeW27ulIs4v8p2da+Nx/iT+8K/0YEhyDMa6mxzen9vjK38jZXo8XEmq+Td6ftvkqzLNO2xVvw/qa/b5t0G+nB8pVtbGXV8V9eX6qlH+6M/FhL7vv3N/3IrF/edG+cN1LmUKlJMG6tNh9yeb5LlXaNbKh5w+rKvqYMnz2xjfAfmGs7ENAHun5TtoMTAg38Qaf3Xx9eJ3/uOV7sdaTnKIxcfYO0aBjb+G9JUgXhCP8+fylF23vtpeffeIeH9un+/fzewWqzNhs9u75enp9eN3/mGV+fewru5Xc/oyE/v9umb5jurwYBvIvy9jN42/32QQZMstomVYL4jH+XN58//P4LzzzfJ/AWJVXvb9u0B7AAAAAElFTkSuQmCC" alt="QR arm64" class="qr-img">
-        <div class="qr-info">
-          <b>Швидке встановлення:</b><br>
-          Наведіть камеру телефона на QR-код для прямого завантаження на смартфон.<br>
-          <span style="color:#6f7c99;word-break:break-all">DUBX-0.3.5-android-arm64-v8a.apk</span>
+    <!-- CARD 1: DEMO -->
+    <div class="showcase-card">
+      <div>
+        <div class="showcase-title">🖥️ Веб-прототип інтерфейсу DUBX</div>
+        <div class="showcase-desc">
+          Повний інтерактивний прототип панелі керування: Головна, Онлайн-плеєр із субтитрами, Файли,
+          Спікери, Мови, Налаштування аудіопристроїв та розрахунок бюджету затримки.
         </div>
       </div>
-      <div class="sha-box">
-        <span>SHA-256: 0901be47d39c2dda64838c43db2322c3eb52876ede1aafa98195740387bf43bf</span>
-      </div>
+      <a href="demo.html" class="btn-cta" style="text-align:center;justify-content:center;">Запустити прототип UI →</a>
     </div>
 
-    <!-- ARM32 -->
-    <div class="card">
-      <div class="card-title">Для старіших пристроїв</div>
-      <div class="card-meta">armeabi-v7a · 17.4 МБ · 32-бітні телефони (Android 7.0+)</div>
-      <a href="DUBX-0.3.5-android-armeabi-v7a.apk" download class="btn-download btn-secondary">
-        ⬇ Завантажити APK (arm32)
-      </a>
-      <div class="qr-box">
-        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXIAAAFyAQAAAADAX2ykAAACwklEQVR4nO2cUW6cQAyGP3eQ+jhIOUCPwt6gZ80N4ECV4DHSIPfBHmCTqklUQnckzwNi4Xuw5LX92zO7onxmTd8+hUPwwQf/pfwivm6swiQdIvXC1EN9311jT/An8qjOSVVVlaFedMwFhhn2F8aNj2Z/8B/hPTgXD1hYvivTj4LcAAvx24X2BH8W3715sgjAKgqoTJLKlfYE/5X8Kjpmz8UiImKZ+r/ZE/y/8ha/e5Mk0BWBhLL0VoQhK7BcYU/w5/OryWMgqTl0mEFuJJXb0sEkIiL9VfYEfx5vCtnXDCaiyaqqWqh3dYV+boy3/shuzbUkhVy8NbKP9W34tzXe+98xl3oH6HgA3N1A9L/t8XWCYUFcQ3ckKYP6kMPeRvy2yKOq5TDE0jG7u2tMYxerxOHfxnj375i1llnzdKkFF0/XOkZ+bpDHfbmV3l1JA9Xx2ZVW+Lc1/lh/By2HcD6k5r1nCv82xtc2KKuaqqLOJ23/aASOG0uPZn/wf18dsPplmHvR6SdAfhEgFRl07XSSVJTlqTye/cG/s2r9rXc+2vCG10tv3kr0o9kf/DvLy6wJZr/s9bcKr+h/G+U7LA0/9+jUzwpLj5Dr+6lHFFa5yJ7gz+W30cbW8Gatow1TVfuQI/Jze/whP+9J2psk9v63hH/b5H3/aNjid9tO2vtfH11F/9sgz6HXPQgqG0Lv46ykoZ+b5Ov+b747GgscRbR9jPlkg/wfzm94r+tv56T7VyD82xrPHqFef2sQV5GV6u5w+LdB3vpfAITlqQj5V6eQVOwZoCyrMDx3MZ9sjrfzseJO9jGGkNeOYQQZnnt7plAusCf4c/ntfN2mkOE4lbxHIj+3xr/+fYoM81ORqU/IUE+9C/lF9Bp7gj+Xf/P7wf3ZJrLifF27/J1+njetzF3iNukc+rlBvubdD674f4bgg38g/jeKfK1qfcRheAAAAABJRU5ErkJggg==" alt="QR arm32" class="qr-img">
-        <div class="qr-info">
-          <b>Швидке встановлення:</b><br>
-          Наведіть камеру телефона на QR-код для прямого завантаження на смартфон.<br>
-          <span style="color:#6f7c99;word-break:break-all">DUBX-0.3.5-android-armeabi-v7a.apk</span>
+    <!-- CARD 2: SCREENSHOTS -->
+    <div class="showcase-card">
+      <div>
+        <div class="showcase-title">📱 Мобільна розкладка (Android UI)</div>
+        <div class="showcase-desc">
+          Галерея з 10 повнорозмірних екранів мобільної версії застосунку: оптимізована нижня навігація,
+          адаптивний статус-бар, керування профілями та діагностика.
         </div>
       </div>
-      <div class="sha-box">
-        <span>SHA-256: a2215aaf80325f9f8c36a30e508590ee08401f289cfaa9c189b629428671307a</span>
-      </div>
+      <a href="screenshots.html" class="btn-cta btn-cta-secondary" style="text-align:center;justify-content:center;">Переглянути галерею екранів →</a>
     </div>
 
   </div>
 
-  <!-- HOW TO INSTALL -->
-  <div class="info-box">
-    <div style="font-size:16px;font-weight:700;">📖 Як встановити APK на Android</div>
-    <ol>
-      <li>Завантажте APK на телефон безпосередньо через браузер або відскануйте QR-код вище.</li>
-      <li>Відкрийте завантажений файл. Якщо Android запитає про дозвіл на встановлення з невідомого джерела — надайте дозвіл для браузера чи файлового менеджера.</li>
-      <li>Натисніть <b>Встановити</b>. Іконка <b>DUBX</b> з'явиться на головному екрані.</li>
-    </ol>
-    <div style="margin-top:12px;color:var(--text-dim);font-size:12.5px;">
-      ℹ️ APK підписано тимчасовим сертифікатом збірки CI. Якщо Google Play Protect видасть стандартне попередження — це нормальна поведінка для застосунків, які встановлюються поза Google Play Store.
-    </div>
+  <!-- PIPELINE -->
+  <div id="pipeline" class="section-title">⚡ Архітектура та конвеєр обробки звуку</div>
+  <div class="pipeline-box">
+AUDIO CAPTURE ──▶ VAD (Silero) ──▶ Streaming STT ──▶ Context SBD<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;──▶ Translate (LLM Cache) ──▶ Speaker Mapping (Diarization)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;──▶ Streaming TTS ──▶ Jitter Buffer ──▶ Virtual Audio Device ──▶ 🎧
   </div>
 
   <!-- DESKTOP SECTION -->
-  <div class="section-title">💻 Збірки для комп'ютера (Десктоп v0.3.5)</div>
+  <div id="desktop" class="section-title">💻 Десктопні платформи (v0.3.5)</div>
   <div class="desktop-grid">
     <div class="desktop-card">
       <div>
         <div style="font-weight:700;">🪟 Windows</div>
-        <div style="font-size:12px;color:var(--text-dim);">x64 Setup (.exe) · 12 МБ</div>
+        <div style="font-size:12.5px;color:var(--text-dim);">x64 Setup (.exe) & MSIX</div>
       </div>
-      <a href="https://github.com/vitgggssks/dubx/releases" style="color:#5b8cff;font-weight:600;text-decoration:none;font-size:13px;">Реліз →</a>
+      <a href="https://github.com/vitgggssks/dubx/releases" style="color:var(--accent-blue);font-weight:600;text-decoration:none;font-size:13.5px;">GitHub Реліз →</a>
     </div>
     <div class="desktop-card">
       <div>
         <div style="font-weight:700;">🍏 macOS</div>
-        <div style="font-size:12px;color:var(--text-dim);">Universal (.dmg) · 23 МБ</div>
+        <div style="font-size:12.5px;color:var(--text-dim);">Universal (.dmg)</div>
       </div>
-      <a href="https://github.com/vitgggssks/dubx/releases" style="color:#5b8cff;font-weight:600;text-decoration:none;font-size:13px;">Реліз →</a>
+      <a href="https://github.com/vitgggssks/dubx/releases" style="color:var(--accent-blue);font-weight:600;text-decoration:none;font-size:13.5px;">GitHub Реліз →</a>
     </div>
     <div class="desktop-card">
       <div>
         <div style="font-weight:700;">🐧 Linux</div>
-        <div style="font-size:12px;color:var(--text-dim);">AppImage (13 МБ) · .deb (10 МБ)</div>
+        <div style="font-size:12.5px;color:var(--text-dim);">AppImage & .deb пакет</div>
       </div>
-      <a href="https://github.com/vitgggssks/dubx/releases" style="color:#5b8cff;font-weight:600;text-decoration:none;font-size:13px;">Реліз →</a>
+      <a href="https://github.com/vitgggssks/dubx/releases" style="color:var(--accent-blue);font-weight:600;text-decoration:none;font-size:13.5px;">GitHub Реліз →</a>
     </div>
   </div>
 
@@ -392,9 +393,8 @@
       DUBX © 2026 · Розгорнуто на Vercel Global Edge CDN
     </div>
     <div>
-      Домени сайту: 
-      <a href="https://dubx-app.vercel.app" style="color:#5b8cff;text-decoration:none;">dubx-app.vercel.app</a> · 
-      <a href="https://dubx-beta.vercel.app" style="color:#5b8cff;text-decoration:none;">dubx-beta.vercel.app</a>
+      Офіційний домен: 
+      <a href="https://dubx-app.vercel.app" style="color:var(--accent-blue);text-decoration:none;">dubx-app.vercel.app</a>
     </div>
   </footer>
 
