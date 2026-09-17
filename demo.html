@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<title>DUBX — інтерактивний прототип UI</title>
+<style>
+  :root{
+    --bg:#080B14; --bg2:#0E1220; --sidebar:#0B0F1B;
+    --panel:rgba(255,255,255,.06); --panel2:rgba(255,255,255,.10);
+    --border:rgba(255,255,255,.10); --border2:rgba(255,255,255,.16);
+    --accent:#4C7DFF; --accent2:#8B5CF6; --cyan:#22D3EE;
+    --ok:#34D399; --warn:#FBBF24; --bad:#F87171;
+    --text:#E9EDF7; --dim:#9AA6C0;
+    --r:16px;
+  }
+  *{box-sizing:border-box}
+  html,body{padding-top:60px !important;margin:0;height:100%}
+  body{padding-top:60px !important;
+    background:radial-gradient(1200px 700px at 15% -10%, #16224a 0%, transparent 55%),
+               radial-gradient(900px 600px at 100% 0%, #2a1b4d 0%, transparent 50%),
+               var(--bg);
+    color:var(--text);
+    font:14px/1.45 -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    display:flex; align-items:center; justify-content:center; min-height:100vh; padding:18px;
+  }
+  .glass{
+    background:linear-gradient(140deg, rgba(255,255,255,.08), rgba(255,255,255,.02));
+    border:1px solid var(--border); border-radius:var(--r);
+    box-shadow:0 18px 40px rgba(0,0,0,.45);
+    backdrop-filter:blur(14px);
+  }
+  /* ── каркас вікна ─────────────────────────────── */
+  .window{width:1180px;max-width:100%;height:760px;display:flex;overflow:hidden;border-radius:20px;
+    border:1px solid var(--border2);background:rgba(10,13,24,.72);box-shadow:0 40px 90px rgba(0,0,0,.6)}
+  .sidebar{width:214px;flex:0 0 214px;background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.01));border-right:1px solid var(--border);padding:16px 12px;display:flex;flex-direction:column;gap:6px}
+  .logo{display:flex;align-items:center;gap:10px;padding:6px 8px 14px}
+  .logo .mark{width:30px;height:30px;border-radius:9px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:grid;place-items:center;font-weight:800;font-size:14px;color:#fff}
+  .logo b{font-size:16px;letter-spacing:.6px}
+  .logo small{display:block;font-size:10.5px;color:var(--dim);letter-spacing:.3px}
+  .nav{display:flex;flex-direction:column;gap:4px;overflow:auto}
+  .nav button{
+    all:unset;cursor:pointer;display:flex;align-items:center;gap:10px;padding:9px 11px;border-radius:11px;
+    color:var(--dim);font-size:13px;transition:.15s
+  }
+  .nav button:hover{background:rgba(255,255,255,.05);color:var(--text)}
+  .nav button.active{background:linear-gradient(90deg,rgba(76,125,255,.22),rgba(139,92,246,.14));color:#fff;box-shadow:inset 0 0 0 1px rgba(76,125,255,.35)}
+  .nav .ico{width:18px;text-align:center;opacity:.95}
+  .nav .badge{margin-left:auto;font-size:10px;padding:1px 6px;border-radius:20px;background:rgba(76,125,255,.22);color:#cfe0ff}
+  .sidebar .foot{margin-top:auto;font-size:11px;color:var(--dim);padding:10px 8px;border-top:1px solid var(--border)}
+  .sidebar .foot b{color:var(--ok)}
+  /* ── контент ─────────────────────────────────── */
+  .main{flex:1;min-width:0;display:flex;flex-direction:column}
+  .topbar{display:flex;align-items:center;gap:12px;padding:14px 18px;border-bottom:1px solid var(--border)}
+  .topbar h1{margin:0;font-size:17px;font-weight:650}
+  .topbar .sub{font-size:11.5px;color:var(--dim)}
+  .topbar .spacer{flex:1}
+  .pill{font-size:11.5px;padding:5px 10px;border-radius:20px;border:1px solid var(--border);background:var(--panel);color:var(--dim);display:inline-flex;gap:6px;align-items:center}
+  .pill.live{color:#d8ffe9;background:rgba(52,211,153,.14);border-color:rgba(52,211,153,.35)}
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 4px rgba(52,211,153,.15)}
+  .content{flex:1;overflow:auto;padding:16px 18px 22px;display:flex;flex-direction:column;gap:14px}
+  .grid{display:grid;gap:14px}
+  .row{display:flex;gap:12px}
+  .card{padding:14px}
+  .card h3{margin:0 0 4px;font-size:13.5px;font-weight:620}
+  .card .hint{font-size:11.5px;color:var(--dim)}
+  .sect{font-size:12px;text-transform:uppercase;letter-spacing:.9px;color:var(--dim);margin:2px 0 0}
+  /* кнопки */
+  .btn{all:unset;cursor:pointer;padding:10px 16px;border-radius:12px;font-size:13px;font-weight:600;text-align:center;transition:.15s}
+  .btn.primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;box-shadow:0 10px 24px rgba(76,125,255,.35)}
+  .btn.primary:hover{filter:brightness(1.08)}
+  .btn.ghost{border:1px solid var(--border2);color:var(--text);background:var(--panel)}
+  .btn.ghost:hover{background:var(--panel2)}
+  .btn.danger{background:rgba(248,113,113,.14);color:#ffd9d9;border:1px solid rgba(248,113,113,.4)}
+  .btn.sm{padding:7px 11px;font-size:12px}
+  /* mode cards */
+  .modes{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+  .mode{cursor:pointer;padding:12px;border-radius:14px;border:1px solid var(--border);background:var(--panel);transition:.15s}
+  .mode:hover{background:var(--panel2)}
+  .mode.sel{border-color:rgba(76,125,255,.6);background:linear-gradient(140deg,rgba(76,125,255,.18),rgba(139,92,246,.08))}
+  .mode .t{font-weight:640;font-size:13px;margin-bottom:2px}
+  .mode .d{font-size:11px;color:var(--dim);min-height:30px}
+  .mode .ms{font-size:11px;color:var(--cyan);margin-top:6px}
+  /* статус системи */
+  .stages{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+  .stage{padding:9px;border-radius:12px;background:var(--panel);border:1px solid var(--border);text-align:center}
+  .stage .n{font-size:10.5px;color:var(--dim)}
+  .stage .v{font-size:12px;font-weight:620;margin-top:3px}
+  .stage .v.ok{color:var(--ok)} .stage .v.warn{color:var(--warn)} .stage .v.bad{color:var(--bad)}
+  /* візуалізатори */
+  .viz-wrap{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .viz{padding:12px}
+  .viz canvas{width:100%;height:86px;display:block}
+  .viz .cap{display:flex;justify-content:space-between;font-size:11.5px;color:var(--dim);margin-bottom:6px}
+  .viz .cap b{color:var(--text);font-weight:600}
+  /* транскрипт */
+  .lines{display:flex;flex-direction:column;gap:8px;max-height:230px;overflow:auto;padding-right:4px}
+  .line{display:grid;grid-template-columns:88px 1fr;gap:10px;padding:9px 10px;border-radius:12px;background:var(--panel);border:1px solid var(--border)}
+  .line .who{font-size:11px;color:var(--dim)}
+  .line .who b{display:block;color:var(--text);font-size:12px}
+  .line .txt{font-size:12.5px}
+  .line .en{color:var(--dim);font-size:11.5px;margin-bottom:3px}
+  .line .ua{color:#eaf1ff}
+  .line.s2{box-shadow:inset 3px 0 0 var(--accent2)}
+  .line.s1{box-shadow:inset 3px 0 0 var(--accent)}
+  .line.s3{box-shadow:inset 3px 0 0 var(--cyan)}
+  /* файли */
+  .drop{border:1.5px dashed rgba(255,255,255,.22);border-radius:14px;padding:22px;text-align:center;background:rgba(255,255,255,.03)}
+  .drop b{font-size:13.5px} .drop p{margin:6px 0 0;font-size:11.5px;color:var(--dim)}
+  .queue{display:flex;flex-direction:column;gap:9px}
+  .job{padding:11px 12px;border-radius:13px;background:var(--panel);border:1px solid var(--border)}
+  .job .head{display:flex;align-items:center;gap:10px}
+  .job .name{font-size:12.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .job .meta{font-size:11px;color:var(--dim);margin-left:auto;white-space:nowrap}
+  .bar{height:6px;border-radius:6px;background:rgba(255,255,255,.10);overflow:hidden;margin-top:9px}
+  .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--cyan));border-radius:6px}
+  .check{display:flex;align-items:center;gap:9px;font-size:12.5px}
+  .check input{appearance:none;width:34px;height:19px;border-radius:20px;background:rgba(255,255,255,.16);position:relative;cursor:pointer;transition:.15s}
+  .check input:checked{background:var(--accent)}
+  .check input::after{content:'';position:absolute;top:2px;left:2px;width:15px;height:15px;border-radius:50%;background:#fff;transition:.15s}
+  .check input:checked::after{left:17px}
+  /* спікери */
+  .spk{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  .spk .av{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;font-weight:700;font-size:14px;color:#08101f}
+  .spk .top{display:flex;gap:10px;align-items:center}
+  .spk .nm{font-size:13px;font-weight:620}
+  .spk .lg{font-size:11px;color:var(--dim)}
+  .spk .voice{margin-top:10px;font-size:11.5px;color:var(--dim);display:flex;justify-content:space-between;align-items:center}
+  .voicelbl{font-size:11px;padding:3px 8px;border-radius:20px;background:rgba(139,92,246,.18);color:#e4d9ff}
+  input[type=range]{width:100%;accent-color:var(--accent)}
+  .kv{display:flex;justify-content:space-between;font-size:12.5px;padding:5px 0;border-bottom:1px dashed rgba(255,255,255,.07)}
+  .kv:last-child{border-bottom:0}
+  .kv span{color:var(--dim)}
+  .lbls{display:flex;flex-wrap:wrap;gap:8px}
+  .lbl{font-size:12px;padding:6px 10px;border-radius:20px;background:var(--panel);border:1px solid var(--border);color:var(--text)}
+  .lbl.act{background:linear-gradient(135deg,rgba(76,125,255,.3),rgba(139,92,246,.2));border-color:rgba(76,125,255,.5)}
+  /* таблиця етапів */
+  table{width:100%;border-collapse:collapse;font-size:12.5px}
+  th,td{text-align:left;padding:7px 8px;border-bottom:1px solid rgba(255,255,255,.07)}
+  th{color:var(--dim);font-weight:500;font-size:11.5px}
+  td.num{font-variant-numeric:tabular-nums}
+  .spark{width:100%;height:78px;display:block}
+  /* оверлей */
+  .ovl{width:330px;padding:13px;border-radius:16px}
+  .ovl .hdr{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:620;margin-bottom:9px}
+  .float{width:288px;padding:12px;border-radius:14px}
+  .promo{background:linear-gradient(135deg,rgba(76,125,255,.24),rgba(139,92,246,.18));border:1px solid rgba(139,92,246,.4);border-radius:16px;padding:14px}
+  .toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);padding:11px 16px;border-radius:14px;
+    background:rgba(15,22,40,.94);border:1px solid rgba(52,211,153,.4);color:#dcffe9;font-size:12.5px;display:none;z-index:9}
+  .kbd{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11.5px;padding:3px 7px;border-radius:7px;background:rgba(255,255,255,.09);border:1px solid var(--border)}
+  .muted{color:var(--dim)}
+  @media (max-width:900px){.window{height:auto;min-height:640px;flex-direction:column}.sidebar{width:100%;flex:0 0 auto;flex-direction:row;flex-wrap:wrap}.sidebar .foot{display:none}}
+</style>
+</head>
+<body>
+<div style="position:fixed;top:0;left:0;right:0;height:44px;background:rgba(8,11,20,0.88);backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,0.1);z-index:9999;display:flex;align-items:center;justify-content:space-between;padding:0 20px;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,sans-serif;">
+  <div style="display:flex;align-items:center;gap:12px;">
+    <a href="/" style="color:#e8ecf8;text-decoration:none;font-size:13px;font-weight:600;display:flex;align-items:center;gap:6px;background:rgba(255,255,255,0.08);padding:5px 12px;border-radius:8px;border:1px solid rgba(255,255,255,0.12);">
+      <span>←</span> На головну (Завантаження)
+    </a>
+    <span style="color:#8f9bb8;font-size:13px;">| &nbsp; <b>DUBX</b> — Інтерактивний прототип UI</span>
+  </div>
+  <div>
+    <a href="screenshots.html" style="color:#8f9bb8;text-decoration:none;font-size:12.5px;margin-right:16px;">📱 Мобільні екрани</a>
+    <a href="https://vitgggssks.github.io/" style="color:#5b8cff;text-decoration:none;font-size:12.5px;font-weight:600;">vitgggssks.github.io</a>
+  </div>
+</div>
+
+<div class="window">
+  <aside class="sidebar">
+    <div class="logo">
+      <div class="mark">DX</div>
+      <div><b>DUBX</b><small>ультрашвидкий дубляж</small></div>
+    </div>
+    <nav class="nav" id="nav"></nav>
+    <div class="foot">Ядро: <b>Rust</b> · FFI ABI 1<br>Остання затримка: <b id="footLat">0.72 с</b></div>
+  </aside>
+  <section class="main">
+    <header class="topbar">
+      <div>
+        <h1 id="ttl">Головна</h1>
+        <div class="sub" id="sub">Живий дубляж системного звуку українською</div>
+      </div>
+      <div class="spacer"></div>
+      <div class="pill" id="pLat">⏱ Затримка <b id="lat">0.72 с</b></div>
+      <div class="pill live"><span class="dot"></span><span id="stText">Готово</span></div>
+    </header>
+    <div class="content" id="screen"></div>
+  </section>
+</div>
+<div class="toast" id="toast">✓ Готово! Дубляж активовано</div>
+
+<script>
+/* ── Навігація за екранами (як у Flutter-версії) ───────────────── */
+const SCREENS = [
+  ['home','Головна','⌂'], ['online','Онлайн','▶'], ['files','Файли','🗂'], ['speakers','Голос','🎙'],
+  ['languages','Мови та голоси','🌐'], ['settings','Налаштування','⚙'], ['diagnostics','Діагностика','📈'],
+  ['hotkeys','Гарячі клавіші','⌘'], ['overlay','Оверлей','▣'], ['profile','Профіль','☺'], ['onboarding','Перший запуск','✧'],
+];
+const SUBS = {
+  home:'Головна фішка DUBX — швидкий дубляж із живою затримкою під кадром',
+  online:'Дубляж відео за посиланням: YouTube, Twitch, прямі ефіри',
+  files:'Пакетна обробка файлів: зберегти оригінал, додати доріжку дубляжу, субтитри',
+  speakers:'Стабільна прив\'язка голосів: один спікер — один голос упродовж сесії',
+  languages:'Мова джерела й цілі, ланцюжки провайдерів, уніфікований голос',
+  settings:'Джерело аудіо, віртуальний пристрій, три режими, апаратне прискорення',
+  diagnostics:'Профілювання затримки по стадіях конвеєра у реальному часі',
+  hotkeys:'Глобальні гарячі клавіші працюють навіть коли вікно згорнуто',
+  overlay:'Плаваюча панель керування поверх інших вікон',
+  profile:'Тариф, історія сесій, статистика економії часу',
+  onboarding:'Три кроки перед першим дубляжем',
+};
+const state = {
+  screen:'home', running:false, mode:'real',
+  levels:[], latency:0.72, jobs:[
+    {n:'interview_4k.mp4', s:'Транскрипція', p:0.62, d:'12:34 / 24:45', url:false},
+    {n:'lecture_week7.mkv', s:'Синтез голосу', p:0.31, d:'08:02 / 26:10', url:false},
+    {n:'https://youtu.be/dQw4w9WgXcQ', s:'Завантаження', p:0.12, d:'0:41 / 3:32', url:true},
+  ],
+  speakers:[
+    {n:'Алекс', lg:'EN → UA', v:'Sarah', c:'#7dd3fc', vol:1.0},
+    {n:'Sarah', lg:'EN → UA', v:'Артем', c:'#c4b5fd', vol:0.85},
+    {n:'Michael', lg:'DE → UA', v:'Марія', c:'#86efac', vol:1.0},
+  ],
+  lines:[
+    {s:0, en:"Today we're going to talk about what changed in the way we build things.", ua:'Сьогодні поговоримо про те, що змінилося в тому, як ми будуємо.', t:'0:12'},
+    {s:1, en:'Absolutely — and the next decade will be critical for global development.', ua:'Абсолютно — і наступне десятиліття буде критичним для глобального розвитку.', t:'0:17'},
+    {s:2, en:'It is not just about technology, it is about people using it every day.', ua:'Це не лише про технології, а про людей, які користуються ними щодня.', t:'0:23'},
+  ],
+};
+document.getElementById('nav').innerHTML = SCREENS.map(([id,l,i])=>
+  `<button data-id="${id}" class="${id==='home'?'active':''}"><span class="ico">${i}</span>${l}${id==='files'?'<span class="badge">4</span>':''}</button>`).join('');
+document.getElementById('nav').addEventListener('click',e=>{
+  const b=e.target.closest('button'); if(!b) return; go(b.dataset.id);
+});
+function go(id){
+  state.screen=id;
+  document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.id===id));
+  document.getElementById('ttl').textContent = SCREENS.find(s=>s[0]===id)[1];
+  document.getElementById('sub').textContent = SUBS[id]||'';
+  render();
+}
+
+/* ── дрібні будівельні блоки ─────────────────────────────────── */
+const card=(t,h,inner,cls='')=>`<div class="card glass ${cls}">${t?`<h3>${t}</h3>${h?`<div class="hint">${h}</div>`:''}`:''}${inner}</div>`;
+const stage=(n,v,k)=>`<div class="stage"><div class="n">${n}</div><div class="v ${k}">${v}</div></div>`;
+const bar=p=>`<div class="bar"><i style="width:${Math.round(p*100)}%"></i></div>`;
+
+/* ── екрани ──────────────────────────────────────────────────── */
+const V = {
+home(){
+  const p = state.running
+    ? `<button class="btn danger" onclick="toggle()">⏹ Зупинити дубляж</button>`
+    : `<button class="btn primary" onclick="toggle()">▶ Почати дубляж</button>`;
+  return `
+  ${card('Режим роботи','Як саме DUBX обробляє звук', `
+    <div class="modes">
+      ${mode('real','Реальний час','Затримка під кадром для стрімів, ігор, дзвінків','0.5–1.5 с')}
+      ${mode('batch','Багатошвидкість','Черга файлів: обробляються паралельно','швидше за реальний час')}
+      ${mode('auto','Автовизначення мовців','Мовці розділяються автоматично, голоси — стабільні','до 6 мовців')}
+    </div>`, '')}
+  <div class="grid" style="grid-template-columns:1.15fr .85fr">
+    ${card('Джерело аудіо','Звідки беремо звук', `
+      <div class="lbls">
+        <span class="lbl act">Системний звук (loopback)</span>
+        <span class="lbl">Мікрофон</span>
+        <span class="lbl">Система + мікрофон</span>
+        <span class="lbl">Файл / посилання</span>
+      </div>
+      <div class="kv" style="margin-top:10px"><span>Пристрій виводу</span><b>DUBX Virtual Audio (48 кГц)</b></div>
+      <div class="kv"><span>Буфер</span><b>256 мс · jitter 180 мс</b></div>
+      <div style="margin-top:12px">${p}</div>`)}
+    ${card('Мови','Джерело визначається автоматично', `
+      <div class="kv"><span>Мова джерела</span><b>Авто · EN (0.97)</b></div>
+      <div class="kv"><span>Мова перекладу</span><b>🇺🇦 Українська</b></div>
+      <div class="kv"><span>Провайдер перекладу</span><b>Groq Llama-3.3-70B</b></div>
+      <div class="kv"><span>Голос</span><b>Уніфікований → Alex</b></div>`)}
+  </div>
+  ${card('Статус системи','Кожна стадія конвеєра звітує про здоров\'я', `
+    <div class="stages">
+      ${stage('Аудіо', state.running?'працює':'очікує', state.running?'ok':'')}
+      ${stage('STT', state.running?'Deepgram':'очікує', state.running?'ok':'')}
+      ${stage('LLM', state.running?'Groq':'очікує', state.running?'ok':'')}
+      ${stage('TTS', state.running?'Cartesia':'очікує', state.running?'ok':'')}
+      ${stage('Вихід', state.running?'DUBX VA':'очікує', state.running?'ok':'')}
+    </div>`)}
+  <div class="viz-wrap">
+    <div class="viz glass card"><div class="cap"><b>Вхідний звук</b><span>48 кГц · mono</span></div><canvas id="cvIn"></canvas></div>
+    <div class="viz glass card"><div class="cap"><b>Дубльований вихід</b><span id="latCap">затримка ${state.latency.toFixed(2)} с</span></div><canvas id="cvOut"></canvas></div>
+  </div>
+  ${card('Живий транскрипт','Спікер · оригінал → переклад', `<div class="lines">${
+    state.lines.map((l,i)=>`<div class="line s${(l.s%3)+1}">
+      <div class="who"><b>${state.speakers[l.s%3].n}</b>Спікер ${(l.s%3)+1} · ${l.t}</div>
+      <div class="txt"><div class="en">${l.en}</div><div class="ua">${l.ua}</div></div></div>`).join('')
+  }</div>`)}`;
+},
+online(){
+  return `<div class="grid" style="grid-template-columns:1.25fr .75fr">
+    <div class="card glass">
+      <div class="row" style="align-items:center;margin-bottom:10px">
+        <b style="font-size:13px">Онлайн-плеєр</b>
+        <span class="pill" style="margin-left:auto">🔗 https://youtu.be/dQw4w9WgXcQ</span>
+      </div>
+      <div style="position:relative;border-radius:14px;overflow:hidden;border:1px solid var(--border);background:#05070e;aspect-ratio:16/9;display:grid;place-items:center">
+        <div style="position:absolute;inset:0;background:radial-gradient(400px 220px at 30% 30%,rgba(76,125,255,.35),transparent 60%),radial-gradient(500px 260px at 80% 80%,rgba(139,92,246,.28),transparent 60%)"></div>
+        <button class="btn primary" style="position:relative;z-index:2" onclick="toggle()">${state.running?'⏸ Пауза':'▶ Відтворити з дубляжем'}</button>
+        <div style="position:absolute;left:14px;bottom:44px;right:14px;z-index:2">
+          <div class="ua" style="font-size:15px;text-shadow:0 2px 10px #000">🇺🇦 ${state.lines[0].ua}</div>
+          <div class="en" style="font-size:12px;color:#cfd6ea;text-shadow:0 2px 10px #000">${state.lines[0].en}</div>
+        </div>
+        <div style="position:absolute;left:14px;right:14px;bottom:14px;z-index:2">${bar(state.running?0.42:0.0)}</div>
+      </div>
+      <div class="row" style="margin-top:12px;align-items:center;gap:10px">
+        <span class="pill live"><span class="dot"></span>LIVE</span>
+        <span class="muted" style="font-size:12px">субтитри спікерів EN → UA парами</span>
+        <span class="pill" style="margin-left:auto">0:41 / 3:32</span>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      ${card('Посилання','Вставити URL: YouTube, Twitch, mp4/m3u8', `
+        <input placeholder="https://…" value="https://youtu.be/dQw4w9WgXcQ"
+          style="all:unset;width:100%;padding:11px 12px;border-radius:12px;background:var(--panel);border:1px solid var(--border);font-size:12.5px">
+        <div class="row" style="margin-top:10px;gap:8px">
+          <button class="btn primary sm" onclick="toast('Посилання прийнято — починаю дубляж')">Почати</button>
+          <button class="btn ghost sm" onclick="toast('Завантаження у теку «Завантаження»')">Завантажити</button>
+        </div>`)}
+      ${card('Субтитри спікерів','Пари EN → UA з мітками мовців', `<div class="lines" style="max-height:200px">${
+        state.lines.map((l,i)=>`<div class="line s${(l.s%3)+1}"><div class="who"><b>Спікер ${(l.s%3)+1}</b>${l.t}</div>
+        <div class="txt"><div class="en">${l.en}</div><div class="ua">${l.ua}</div></div></div>`).join('')}</div>`)}
+    </div>`;
+},
+files(){
+  return `${card('', '', `<div class="drop"><b>Перетягніть файли або натисніть, щоб вибрати</b>
+      <p>MP4 · MKV · MOV · AVI · WEBM · MP3 · WAV · M4A — до 50 файлів у черзі</p>
+      <div class="row" style="justify-content:center;margin-top:12px;gap:8px">
+        <button class="btn primary sm" onclick="addJob()">＋ Додати файли</button>
+        <button class="btn ghost sm" onclick="toast('Посилання додано в чергу')">🔗 За посиланням</button>
+      </div></div>`)}
+  <div class="grid" style="grid-template-columns:1fr .72fr">
+    ${card('Черга обробки','Прогрес беруть із нативного ядра', `<div class="queue">${
+      state.jobs.map((j,i)=>`<div class="job"><div class="head">
+        <span class="name">${j.url?'🔗 ':'🎬 '}${j.n}</span>
+        <span class="meta">${j.s} · ${j.d}</span></div>${bar(j.p)}</div>`).join('')}
+      <div class="row" style="gap:8px;margin-top:4px">
+        <button class="btn primary sm" onclick="startAll()">▶ Почати обробку</button>
+        <button class="btn ghost sm" onclick="clearDone()">Очистити завершені</button>
+      </div></div>`)}
+    ${card('Опції виводу','Що робити з результатом', `
+      <div class="check"><input type="checkbox" checked> Зберегти оригінальне аудіо</div>
+      <div class="check" style="margin-top:9px"><input type="checkbox" checked> Додати перекладене аудіо</div>
+      <div class="check" style="margin-top:9px"><input type="checkbox" checked> Субтитри .srt</div>
+      <div class="check" style="margin-top:9px"><input type="checkbox"> Перекодувати відео (NVENC / QSV / VT)</div>
+      <div class="kv" style="margin-top:12px"><span>Формат</span><b>MP4 (h264 + aac)</b></div>
+      <div class="kv"><span>Куди</span><b>~/Movies/DUBX</b></div>
+      <div class="kv"><span>Швидкість</span><b id="speed">${state.running?'0.8× реального часу':'—'}</b></div>`)}
+  </div>`;
+},
+speakers(){
+  return `${card('Керування спікерами','Голос закріплюється за мовцем і не «стрибає» між репліками', `
+    <div class="spk">${state.speakers.map((s,i)=>`
+      <div class="job">
+        <div class="top"><div class="av" style="background:${s.c}">${s.n[0]}</div>
+          <div><div class="nm">${s.n}</div><div class="lg">${s.lg} · Спікер ${i+1}</div></div>
+          <div style="margin-left:auto" class="muted">⋯</div></div>
+        <div class="voice"><span>Голос</span><span class="voicelbl">${s.v}</span></div>
+        <div style="margin-top:8px"><input type="range" min="0" max="100" value="${s.vol*100}"
+          oninput="setVol(${i},this.value)"></div>
+        <div class="voice"><span class="muted">Гучність</span><span>${Math.round(s.vol*100)}%</span></div>
+      </div>`).join('')}</div>
+    <div class="row" style="margin-top:12px;gap:8px">
+      <button class="btn primary sm" onclick="toast('Спікера додано — чекаю на голос у наступній репліці')">＋ Додати спікера</button>
+      <button class="btn ghost sm" onclick="toast('Голосовий профіль збережено локально')">Зберегти голосовий профіль</button>
+    </div>`)}`;
+},
+languages(){
+  const langs=['🇺🇦 Українська','🇬🇧 English','🇵🇱 Polski','🇩🇪 Deutsch','🇫🇷 Français','🇪🇸 Español','🇮🇹 Italiano','🇵🇹 Português',
+    '🇳🇱 Nederlands','🇨🇿 Čeština','🇸🇰 Slovenčina','🇷🇴 Română','🇹🇷 Türkçe','🇸🇦 العربية','🇮🇱 עברית','🇯🇵 日本語','🇰🇷 한국어','🇨🇳 中文','🇬🇷 Ελληνικά'];
+  return `<div class="grid" style="grid-template-columns:1fr 1fr">
+    ${card('Напрям перекладу','Автовизначення джерела з підтвердженням', `
+      <div class="kv"><span>Мова джерела</span><b>Авто · EN (упевненість 0.97)</b></div>
+      <div class="kv"><span>Мова цілі</span><b>🇺🇦 Українська</b></div>
+      <div class="kv"><span>Уніфікований голос</span><b>Alex (Cartesia sonic-turbo)</b></div>`)}
+    ${card('Ланцюжки провайдерів','Fallback: якщо перший недоступний — беремо наступний', `
+      <div class="kv"><span>STT</span><b>deepgram-nova3 → assemblyai → whisper-local</b></div>
+      <div class="kv"><span>Переклад</span><b>groq-fast → deepl → openai-gpt4o-mini</b></div>
+      <div class="kv"><span>TTS</span><b>cartesia-sonic → elevenlabs-flash → piper-local</b></div>
+      <div class="kv"><span>Кеш перекладів</span><b>увімкнено · LRU + SQLite</b></div>`)}
+  </div>
+  ${card('Мови','19 мов — джерело й ціль', `<div class="lbls">${
+    langs.map((l,i)=>`<span class="lbl ${i===0?'act':''}">${l}</span>`).join('')}</div>
+    <div class="row" style="margin-top:12px"><input placeholder="Пошук мови…" style="all:unset;flex:1;padding:10px 12px;border-radius:12px;background:var(--panel);border:1px solid var(--border);font-size:12.5px"></div>`)}`;
+},
+settings(){
+  const modes=[['ultra-low','Ультранизька','~0.3–0.6 с','найменший буфер, найшвидші моделі'],
+    ['balanced','Збалансована','~0.7–1.5 с','компроміс якості й швидкості'],
+    ['quality','Якість','1.5–3.0 с','довший контекст, найкращі голоси']];
+  return `<div class="grid" style="grid-template-columns:1fr 1fr">
+    ${card('Джерело аудіо','Системний звук або мікрофон', `
+      <div class="lbls"><span class="lbl act">Системний звук (loopback)</span><span class="lbl">Мікрофон</span><span class="lbl">Обидва</span></div>
+      <div class="kv" style="margin-top:10px"><span>Віртуальний пристрій</span><b>DUBX Virtual Audio</b></div>
+      <div class="kv"><span>Частота дискретизації</span><b>48 000 Гц</b></div>
+      <div class="kv"><span>Буфер</span><b>256 мс</b></div>`)}
+    ${card('Апаратне прискорення','Визначається автоматично', `
+      <div class="kv"><span>NVENC</span><b>${navigator.userAgent.includes('Win')?'доступний':'не знайдено'}</b></div>
+      <div class="kv"><span>Intel QuickSync</span><b>не знайдено</b></div>
+      <div class="kv"><span>Apple VideoToolbox</span><b>не знайдено</b></div>
+      <div class="kv"><span>VAAPI</span><b>доступний</b></div>`)}
+  </div>
+  ${card('Режими продуктивності','Затримка / якість', `<div class="modes">${
+    modes.map(([id,t,ms,d])=>`<div class="mode ${id==='balanced'?'sel':''}"><div class="t">${t}</div><div class="d">${d}</div><div class="ms">${ms}</div></div>`).join('')
+  }</div>`)}
+  ${card('Приватність і ключі','Безпека за замовчуванням', `
+    <div class="check"><input type="checkbox" checked> Режим приватності: не зберігати аудіо й транскрипти</div>
+    <div class="check" style="margin-top:9px"><input type="checkbox" checked> Видаляти тимчасові файли одразу після обробки</div>
+    <div class="check" style="margin-top:9px"><input type="checkbox"> Надсилати анонімну статистику затримки</div>
+    <div class="kv" style="margin-top:12px"><span>Ключі API</span><b>сховище ОС · значення не потрапляють у UI та логи</b></div>`)}`;
+},
+diagnostics(){
+  const stages=[['Захоплення аудіо',12,'—'],['VAD',8,'—'],['Розпізнавання (STT)',220,'330'],['Переклад (MT)',110,'—'],
+    ['Синтез голосу (TTS)',280,'200'],['Jitter-буфер',90,'—']];
+  return `${card('Розклад затримки','Кожна стадія звітує окремо — загальна сума і є чесною затримкою', `<table>
+    <tr><th>Стадія</th><th>Поточний сеанс</th><th>P95</th></tr>
+    ${stages.map(([n,a,b])=>`<tr><td>${n}</td><td class="num">${a} мс</td><td class="num muted">${b}</td></tr>`).join('')}
+    <tr><td><b>Разом</b></td><td class="num"><b style="color:var(--ok)">720 мс</b></td><td class="num muted">1230 мс</td></tr>
+  </table>`)}
+  ${card('Затримка в часі','Оновлюється щосекунди', `<canvas class="spark" id="cvLat"></canvas>`)}
+  <div class="grid" style="grid-template-columns:repeat(4,1fr)">
+    ${card('CPU','',`<div class="kv"><span>Загальне</span><b>${state.running?'34':'6'}%</b></div>`,'')}
+    ${card('RAM','',`<div class="kv"><span>DUBX</span><b>412 МБ</b></div>`,'')}
+    ${card('GPU','',`<div class="kv"><span>Декодер</span><b>${state.running?'28':'0'}%</b></div>`,'')}
+    ${card('Мережа','',`<div class="kv"><span>Служби</span><b>${state.running?'2 активні':'0'}</b></div>`,'')}
+  </div>`;
+},
+hotkeys(){
+  const rows=[['Почати / зупинити дубляж','Ctrl + Shift + D'],['Змкнути / розмкнути мікрофон','Ctrl + Shift + M'],
+    ['Показати транскрипт','Ctrl + Shift + L'],['Пауза синтезу голосу','Ctrl + Shift + S'],
+    ['Відкрити оверлей','Ctrl + Shift + O'],['Приватний режим','Ctrl + Shift + P']];
+  return card('Гарячі клавіші','Працюють глобально, навіть коли вікно неактивне', `<table>
+    <tr><th>Дія</th><th>Комбінація</th><th></th></tr>
+    ${rows.map(([a,k])=>`<tr><td>${a}</td><td><span class="kbd">${k}</span></td><td class="muted" style="text-align:right">змінити</td></tr>`).join('')}
+  </table>
+  <div class="row" style="margin-top:12px;gap:8px">
+    <button class="btn ghost sm" onclick="toast('Гарячі клавіші повернуто до стандартних')">Скинути до стандартних</button>
+    <button class="btn primary sm" onclick="toast('Нові комбінації збережено')">Зберегти</button>
+  </div>`);
+},
+overlay(){
+  return `<div class="grid" style="grid-template-columns:auto 1fr;align-items:start;gap:18px">
+    <div class="ovl glass">
+      <div class="hdr"><span class="dot"></span> LIVE · системний звук</div>
+      <div class="kv"><span>Мова</span><b>EN → 🇺🇦</b></div>
+      <div class="kv"><span>Затримка</span><b id="ovLat">0.80 с</b></div>
+      <div style="margin-top:8px;font-size:11.5px;color:var(--dim)">Гучність</div>
+      <input type="range" min="0" max="100" value="72">
+      <div class="row" style="gap:8px;margin-top:10px">
+        <button class="btn danger sm" style="flex:1" onclick="toggle()">Стоп</button>
+        <button class="btn ghost sm" style="flex:1" onclick="toast('Оверлей закріплено')">⇱</button>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      ${card('Плаваючий оверлей','Компактне вікно поверх усіх застосунків', `
+        <div class="float glass">
+          <div class="hdr" style="display:flex;gap:8px;align-items:center;font-size:12px;font-weight:620"><span class="dot"></span> Дубляж файлу</div>
+          <div class="muted" style="font-size:11.5px">interview_4k.mp4 · 12:34 / 24:45</div>
+          ${bar(0.51)}
+          <div class="en" style="font-size:11.5px;margin-top:9px">And that is how the pipeline stays under one second.</div>
+          <div class="ua" style="font-size:12.5px">І саме так конвеєр тримається менш ніж за секунду.</div>
+        </div>`)}
+      ${card('Налаштування оверлея','Що показувати й коли', `
+        <div class="check"><input type="checkbox" checked> Показувати затримку</div>
+        <div class="check" style="margin-top:9px"><input type="checkbox" checked> Субтитри спікерів</div>
+        <div class="check" style="margin-top:9px"><input type="checkbox"> Завжди поверх повноекранних застосунків</div>`)}
+    </div></div>`;
+},
+profile(){
+  return `<div class="grid" style="grid-template-columns:1fr 1fr">
+    ${card('Профіль','', `
+      <div class="row" style="align-items:center;gap:12px">
+        <div class="av" style="width:46px;height:46px;border-radius:14px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:grid;place-items:center;font-weight:700">ОК</div>
+        <div><div class="nm" style="font-size:15px">Олег Ковальчук</div><div class="lg">Локальний профіль · без реєстрації</div></div>
+      </div>
+      <div class="kv" style="margin-top:12px"><span>Сесій дубляжу</span><b>128</b></div>
+      <div class="kv"><span>Годин відео опрацьовано</span><b>342 год</b></div>
+      <div class="kv"><span>Кеш перекладів</span><b>18 420 фраз · економія 21%</b></div>`)}
+    <div class="promo">
+      <div style="font-size:12px;letter-spacing:.8px;text-transform:uppercase;color:#dcd2ff">Преміум</div>
+      <div style="font-size:19px;font-weight:700;margin:6px 0 4px">До 2026 року</div>
+      <div class="muted" style="font-size:12.5px">Найшвидші провайдери, 19 мов, клонування власного голосу (з вашої згоди), пріоритетна черга.</div>
+      <button class="btn primary" style="margin-top:12px;width:100%" onclick="toast('Тариф активний до 2026 року')">Керувати тарифом</button>
+    </div>
+  </div>
+  ${card('Історія сесій','Останні запуски', `<table>
+    <tr><th>Коли</th><th>Джерело</th><th>Мова</th><th>Спікерів</th><th>Сер. затримка</th></tr>
+    <tr><td>сьогодні, 14:02</td><td>Системний звук</td><td>EN → UA</td><td class="num">3</td><td class="num" style="color:var(--ok)">0.72 с</td></tr>
+    <tr><td>сьогодні, 11:35</td><td>interview_4k.mp4</td><td>EN → UA</td><td class="num">2</td><td class="num" style="color:var(--ok)">0.68 с</td></tr>
+    <tr><td>вчора, 20:11</td><td>https://youtu.be/…</td><td>DE → UA</td><td class="num">4</td><td class="num" style="color:var(--warn)">1.12 с</td></tr>
+  </table>`)}`;
+},
+onboarding(){
+  return `<div class="grid" style="grid-template-columns:repeat(3,1fr)">
+    ${card('Крок 1','Мова інтерфейсу', `<div class="lbls"><span class="lbl act">🇺🇦 Українська</span><span class="lbl">🇬🇧 English</span><span class="lbl">🇵🇱 Polski</span></div>`)}
+    ${card('Крок 2','Звідки беремо звук', `<div class="lbls"><span class="lbl act">Системний звук</span><span class="lbl">Мікрофон</span><span class="lbl">Файли</span></div>`)}
+    ${card('Крок 3','Ключі та демо-режим', `<div class="check"><input type="checkbox" checked> Увімкнути демо-режим без ключів</div>
+      <div class="hint" style="margin-top:8px">Ключі можна додати пізніше: сховище ОС, значення ніколи не показуються.</div>`)}
+  </div>
+  ${card('','', `<div class="row" style="gap:8px;justify-content:flex-end">
+    <button class="btn ghost" onclick="toast('Майстер можна пройти пізніше')">Пропустити</button>
+    <button class="btn primary" onclick="go('home');toast('Готово! Налаштування збережено')">Продовжити</button>
+  </div>`)}`;
+},
+};
+const mode=(id,t,d,ms)=>`<div class="mode ${state.mode===id?'sel':''}" onclick="setMode('${id}')"><div class="t">${t}</div><div class="d">${d}</div><div class="ms">${ms}</div></div>`;
+
+/* ── взаємодія ───────────────────────────────────────────────── */
+function render(){ document.getElementById('screen').innerHTML = (V[state.screen]||V.home)(); if(state.screen==='home'&&typeof startViz==='function') startViz(); }
+function setMode(m){ state.mode=m; render(); }
+function toggle(){
+  state.running=!state.running;
+  document.getElementById('stText').textContent = state.running?'Дубляж активний':'Готово';
+  if(state.running) toast('Готово! Дубляж активовано'); render();
+}
+function setVol(i,v){ state.speakers[i].vol=+v/100; if(state.screen==='speakers') render(); }
+function addJob(){
+  state.jobs.unshift({n:'movie_'+Math.floor(Math.random()*900+100)+'.mp4', s:'У черзі', p:0, d:'—', url:false});
+  render(); toast('Файл додано в чергу');
+}
+function startAll(){ state.jobs.forEach(j=>{j.s='Обробка'; j.p=Math.max(j.p,0.05)}); toast('Обробку запущено: 4 файли'); render(); }
+function clearDone(){ state.jobs=state.jobs.filter(j=>j.p<1); render(); toast('Завершені прибрано'); }
+let toastT=null;
+function toast(msg){
+  const t=document.getElementById('toast'); t.textContent='✓ '+msg; t.style.display='block';
+  clearTimeout(toastT); toastT=setTimeout(()=>t.style.display='none',2200);
+}
+
+/* ── анімація: візуалізатори, затримка, черга ────────────────── */
+const LAT_HIST = Array.from({length:60},()=>0.62+Math.random()*0.3);
+function viz(canvas, seed, on){
+  if(!canvas) return;
+  const ctx=canvas.getContext('2d');
+  const w=canvas.width=canvas.clientWidth*2, h=canvas.height=canvas.clientHeight*2;
+  ctx.clearRect(0,0,w,h);
+  const bars=42;
+  for(let i=0;i<bars;i++){
+    const t=performance.now()/260+ i*0.34 + seed;
+    const amp = on ? (0.35+0.65*Math.abs(Math.sin(t)*Math.sin(t*0.37+1.1))) : 0.06;
+    const bh = Math.max(3, amp*h*0.86*Math.abs(Math.sin(i*0.7+t)));
+    const grad=ctx.createLinearGradient(0,0,0,h);
+    grad.addColorStop(0, seed? '#22D3EE':'#8B5CF6'); grad.addColorStop(1, seed? '#4C7DFF':'#4C7DFF');
+    ctx.fillStyle=grad;
+    const bw=w/bars*0.58;
+    ctx.beginPath();
+    ctx.roundRect ? ctx.roundRect(i*(w/bars), (h-bh)/2, bw, bh, 6) : ctx.rect(i*(w/bars),(h-bh)/2,bw,bh);
+    ctx.fill();
+  }
+}
+function spark(){
+  const c=document.getElementById('cvLat'); if(!c) return;
+  const ctx=c.getContext('2d'); const w=c.width=c.clientWidth*2, h=c.height=c.clientHeight*2;
+  ctx.clearRect(0,0,w,h);
+  const max=1.6, min=0.3;
+  ctx.strokeStyle='rgba(255,255,255,.12)'; ctx.lineWidth=2;
+  [0.8,1.5].forEach(v=>{ const y=h-(v-min)/(max-min)*h; ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(w,y); ctx.stroke(); });
+  ctx.lineWidth=4; ctx.strokeStyle='#4C7DFF'; ctx.beginPath();
+  LAT_HIST.forEach((v,i)=>{ const x=i/(LAT_HIST.length-1)*w, y=h-(v-min)/(max-min)*h; i?ctx.lineTo(x,y):ctx.moveTo(x,y); });
+  ctx.stroke();
+  ctx.fillStyle='#22D3EE';
+  const lastX=w, lastY=h-(LAT_HIST.at(-1)-min)/(max-min)*h;
+  ctx.beginPath(); ctx.arc(lastX-4,lastY,7,0,7); ctx.fill();
+}
+function tick(){
+  state.levels=(state.levels||[]).concat(Math.random());
+  const lat = state.running ? 0.55+Math.random()*0.45 : 0.72;
+  state.latency=lat;
+  LAT_HIST.push(lat); if(LAT_HIST.length>60) LAT_HIST.shift();
+  const set=(id,val)=>{const el=document.getElementById(id); if(el) el.textContent=val;};
+  set('lat', lat.toFixed(2)+' с'); set('ovLat', (lat+0.08).toFixed(2)+' с');
+  set('footLat', lat.toFixed(2)+' с'); set('latCap','затримка '+lat.toFixed(2)+' с');
+  if(state.screen==='home'){ viz(document.getElementById('cvIn'),0,state.running); viz(document.getElementById('cvOut'),1,state.running); }
+  if(state.screen==='diagnostics') spark();
+  if(state.screen==='files' && state.running){
+    let changed=false;
+    state.jobs.forEach(j=>{ if(j.p>0&&j.p<1){ j.p=Math.min(1,j.p+0.006); j.s = j.p<0.35?'Транскрипція':j.p<0.7?'Переклад':'Синтез голосу'; changed=true; } });
+    if(changed){ const el=document.getElementById('speed'); if(el) el.textContent='0.8× реального часу'; render(); }
+  } else if(state.screen==='files' && !state.running){
+    state.jobs.forEach(j=>{ if(j.p>0&&j.p<1){ j.p=Math.min(1,j.p+0.004); j.s=j.p<0.35?'Транскрипція':j.p<0.7?'Переклад':'Синтез голосу'; render(); } });
+  }
+  requestAnimationFrame(tick);
+}
+render(); tick();
+</script>
+</body>
+</html>
