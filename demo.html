@@ -993,37 +993,47 @@
           </video>
         </div>
 
-        <!-- PLAYER CONTROLS STRIP -->
+        <!-- PLAYER CONTROLS STRIP (57:17 AUDIO & VIDEO) -->
         <div class="player-controls-strip">
-          <div class="strip-left">
+          <div class="strip-left" style="flex:1;min-width:320px;">
             <button class="btn-toggle-dubbing" id="btn-main-dub-toggle" onclick="toggleDubbing()">
               <span id="dub-toggle-icon">⏸</span>
               <span id="dub-toggle-text">Призупинити дубляж</span>
             </button>
 
-            <!-- Integrated Ukrainian Audio Player -->
-            <div class="audio-player-integrated">
-              <span style="font-size:12px;color:#94a3b8;">🔊 Укр. дубляж:</span>
+            <!-- Full 57:17 Audio Player Bar -->
+            <div class="audio-player-integrated" style="flex:1;display:flex;align-items:center;gap:10px;">
+              <select id="select-audio-track" class="select-dropdown" style="padding:4px 8px;font-size:11.5px;max-width:210px;" onchange="changeAudioSource(this.value)">
+                <option value="/audio/dubbed_audio_57m17s.mp3" selected>🎙️ Дубляж укр (57:17 MP3)</option>
+                <option value="/audio/original_audio_57m17s.mp3">📻 Оригінал PT (57:17 MP3)</option>
+              </select>
+
               <button class="btn-audio-mini" onclick="playAudioTrack()" id="btn-audio-track-play">
                 <span id="audio-track-icon">▶</span>
-                <span>Слухати аудіодоріжку</span>
+                <span id="audio-btn-label">Слухати 57:17</span>
               </button>
-              <audio id="standalone-audio-player" src="/audio/full_dubbing_uk.mp3"></audio>
+
+              <div style="display:flex;align-items:center;gap:6px;flex:1;">
+                <input type="range" id="audio-scrubber" min="0" max="3436" value="0" style="flex:1;accent-color:#3b82f6;height:4px;" oninput="onScrubAudio(this.value)">
+                <span id="audio-timer" style="font-family:var(--font-mono);font-size:11px;color:#93c5fd;white-space:nowrap;">00:00 / 57:17</span>
+              </div>
+
+              <audio id="standalone-audio-player" src="/audio/dubbed_audio_57m17s.mp3" preload="metadata"></audio>
             </div>
           </div>
 
           <div class="strip-right">
-            <a href="/subtitles_full_uk.srt" download class="download-pill-btn" title="Завантажити субтитри для всього 57-хвилинного відео">
+            <a href="/audio/dubbed_audio_57m17s.mp3" download class="download-pill-btn" title="Завантажити повну 57-хвилинну українську звукову доріжку">
               <span>⬇</span>
-              <span>Субтитри повного відео (.srt)</span>
+              <span>Повний дубляж (57:17 MP3)</span>
             </a>
-            <a href="/video_dubbed_ukrainian.mp4" download class="download-pill-btn" title="Завантажити змонтований відеокліп з українським дубляжем">
+            <a href="/audio/original_audio_57m17s.mp3" download class="download-pill-btn" title="Завантажити повну 57-хвилинну оригінальну аудіодоріжку">
               <span>⬇</span>
-              <span>Відео (.mp4)</span>
+              <span>Оригінал (57:17 MP3)</span>
             </a>
-            <a href="/audio/full_dubbing_uk.mp3" download class="download-pill-btn" title="Завантажити українську звукову доріжку">
+            <a href="/subtitles_full_uk.srt" download class="download-pill-btn" title="Завантажити повні субтитри для 57:17 відео">
               <span>⬇</span>
-              <span>Аудіо (.mp3)</span>
+              <span>Субтитри (.srt)</span>
             </a>
           </div>
         </div>
@@ -1481,6 +1491,40 @@
         nativeVideo.play().catch(() => {});
       }
     }
+
+    
+    // 57:17 Audio Player logic
+    function changeAudioSource(src) {
+      const wasPlaying = !audioTrackPlayer.paused;
+      audioTrackPlayer.src = src;
+      if (wasPlaying) {
+        audioTrackPlayer.play().catch(() => {});
+      }
+    }
+
+    function onScrubAudio(val) {
+      audioTrackPlayer.currentTime = val;
+    }
+
+    function formatAudioTime(sec) {
+      const m = Math.floor(sec / 60);
+      const s = Math.floor(sec % 60);
+      return (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
+    }
+
+    audioTrackPlayer.ontimeupdate = () => {
+      const cur = audioTrackPlayer.currentTime;
+      const dur = audioTrackPlayer.duration || 3436;
+      const scrubber = document.getElementById('audio-scrubber');
+      if (scrubber) {
+        scrubber.value = cur;
+        scrubber.max = dur;
+      }
+      const timer = document.getElementById('audio-timer');
+      if (timer) {
+        timer.innerText = formatAudioTime(cur) + ' / ' + formatAudioTime(dur);
+      }
+    };
 
     function playAudioTrack() {
       const icon = document.getElementById('audio-track-icon');
