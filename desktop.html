@@ -1,1028 +1,1549 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>DUBX — Живий дубляж українською: Terapia Plasmática</title>
-<style>
-  :root {
-    --bg-window: #090d19;
-    --bg-sidebar: #0b1120;
-    --card-bg: rgba(15, 23, 42, 0.72);
-    --card-border: rgba(255, 255, 255, 0.08);
-    --card-border-focus: rgba(91, 140, 255, 0.35);
-    --text: #e8ecf8;
-    --text-dim: #8f9bb8;
-    --text-muted: #5b6887;
-    --blue: #3b82f6;
-    --blue-glow: #2563eb;
-    --purple: #8b5cf6;
-    --cyan: #06b6d4;
-    --green: #10b981;
-    --red: #ef4444;
-  }
-  * { box-sizing: border-box; }
-  html, body {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    background: #040711;
-    color: var(--text);
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-    font-size: 13.5px;
-    user-select: none;
-  }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DUBX — Робоча станція живого дубляжу українською</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23080b14'/><circle cx='50' cy='50' r='38' fill='none' stroke='%233b82f6' stroke-width='8'/><polygon points='42,32 68,50 42,68' fill='%2360a5fa'/></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-base: #060911;
+      --bg-titlebar: #080d1a;
+      --bg-sidebar: #090e1c;
+      --bg-card: rgba(14, 21, 38, 0.72);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --card-border-hover: rgba(59, 130, 246, 0.4);
+      --accent-blue: #2563eb;
+      --accent-cyan: #06b6d4;
+      --accent-green: #10b981;
+      --accent-purple: #8b5cf6;
+      --text-main: #f8fafc;
+      --text-dim: #94a3b8;
+      --text-muted: #64748b;
+      --fluent-radius: 12px;
+      --font-ui: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --font-mono: 'JetBrains Mono', Consolas, monospace;
+    }
 
-  .desktop-app {
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    background: radial-gradient(1200px 700px at 15% -10%, #172554 0%, transparent 50%),
-                radial-gradient(1000px 600px at 85% 10%, #3b0764 0%, transparent 45%),
-                var(--bg-window);
-    overflow: hidden;
-  }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg-base);
+      color: var(--text-main);
+      font-family: var(--font-ui);
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      user-select: none;
+      -webkit-font-smoothing: antialiased;
+    }
 
-  /* Titlebar */
-  .titlebar {
-    height: 48px;
-    background: rgba(9, 13, 25, 0.95);
-    border-bottom: 1px solid var(--card-border);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 16px;
-    flex-shrink: 0;
-  }
-  .titlebar-brand {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-  .titlebar-logo {
-    width: 32px;
-    height: 32px;
-    border-radius: 9px;
-    background: linear-gradient(135deg, #3b82f6, #8b5cf6);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 800;
-    font-size: 15px;
-    color: #fff;
-    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
-  }
-  .titlebar-name {
-    font-weight: 800;
-    font-size: 16px;
-    letter-spacing: -0.2px;
-  }
-  .titlebar-sub {
-    color: var(--text-muted);
-    font-size: 12px;
-    margin-left: 8px;
-    border-left: 1px solid rgba(255,255,255,0.1);
-    padding-left: 10px;
-  }
+    /* TITLEBAR */
+    .titlebar {
+      height: 48px;
+      background: var(--bg-titlebar);
+      border-bottom: 1px solid var(--card-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      flex-shrink: 0;
+      z-index: 50;
+    }
+    .titlebar-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .brand-badge {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      text-decoration: none;
+      color: #fff;
+    }
+    .brand-icon {
+      width: 30px;
+      height: 30px;
+      background: linear-gradient(135deg, #1d4ed8, #06b6d4);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 14px;
+      box-shadow: 0 0 16px rgba(37, 99, 235, 0.5);
+    }
+    .brand-title {
+      font-weight: 800;
+      font-size: 15px;
+      letter-spacing: -0.02em;
+    }
+    .brand-tag {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 7px;
+      background: rgba(37, 99, 235, 0.2);
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      color: #93c5fd;
+      border-radius: 6px;
+    }
+    .titlebar-center {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .btn-action-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      color: #fff;
+      border: 1px solid rgba(147, 197, 253, 0.4);
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 2px 10px rgba(37, 99, 235, 0.35);
+      transition: all 0.2s;
+    }
+    .btn-action-primary:hover {
+      background: linear-gradient(135deg, #3b82f6, #2563eb);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.5);
+    }
+    .control-pill {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--card-border);
+      padding: 4px 10px;
+      border-radius: 8px;
+      font-size: 12px;
+      color: var(--text-dim);
+    }
+    .status-pill {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .pill-live {
+      background: rgba(239, 68, 68, 0.15);
+      color: #ef4444;
+      border: 1px solid rgba(239, 68, 68, 0.35);
+    }
+    .pill-live::before {
+      content: '';
+      width: 7px;
+      height: 7px;
+      background: #ef4444;
+      border-radius: 50%;
+      animation: pulseLive 1.5s infinite;
+    }
+    @keyframes pulseLive {
+      0% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(1.3); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+    .pill-latency {
+      background: rgba(16, 185, 129, 0.15);
+      color: #10b981;
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      font-family: var(--font-mono);
+      font-size: 11px;
+    }
+    .titlebar-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .win-controls {
+      display: flex;
+      gap: 6px;
+    }
+    .win-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      background: transparent;
+      border: none;
+      color: var(--text-dim);
+      font-size: 12px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s;
+    }
+    .win-btn:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+    }
 
-  /* Center Controls */
-  .center-controls {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid var(--card-border);
-    border-radius: 24px;
-    padding: 4px 10px;
-  }
-  .control-btn {
-    background: transparent;
-    border: none;
-    color: var(--text-dim);
-    padding: 5px 8px;
-    border-radius: 14px;
-    cursor: pointer;
-    font-size: 12.5px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    transition: all 0.15s ease;
-  }
-  .control-btn:hover { background: rgba(255,255,255,0.08); color: #fff; }
-  .control-select {
-    background: transparent;
-    border: none;
-    color: #fff;
-    font-size: 12.5px;
-    font-weight: 500;
-    cursor: pointer;
-    outline: none;
-  }
-  .control-select option { background: #0f172a; color: #fff; }
+    /* MAIN APP WORKSPACE */
+    .app-workspace {
+      flex: 1;
+      display: flex;
+      overflow: hidden;
+    }
 
-  /* Right Status */
-  .titlebar-right {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-  }
-  .status-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 4px 12px;
-    border-radius: 16px;
-    font-size: 12px;
-    font-weight: 600;
-  }
-  .pill-live {
-    background: rgba(16, 185, 129, 0.15);
-    border: 1px solid rgba(16, 185, 129, 0.35);
-    color: #34d399;
-  }
-  .live-dot {
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: #10b981;
-    box-shadow: 0 0 8px #10b981;
-    animation: pulse 1.8s infinite;
-  }
-  @keyframes pulse {
-    0% { transform: scale(0.95); opacity: 0.8; }
-    50% { transform: scale(1.2); opacity: 1; }
-    100% { transform: scale(0.95); opacity: 0.8; }
-  }
-  .pill-latency {
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid var(--card-border);
-    color: #cbd5e1;
-  }
-  .window-actions {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    border-left: 1px solid rgba(255,255,255,0.1);
-    padding-left: 12px;
-  }
-  .win-btn {
-    background: transparent;
-    border: none;
-    color: var(--text-dim);
-    width: 28px;
-    height: 28px;
-    border-radius: 6px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 13px;
-    transition: all 0.15s ease;
-  }
-  .win-btn:hover { background: rgba(255, 255, 255, 0.1); color: #fff; }
+    /* LEFT SIDEBAR */
+    .left-sidebar {
+      width: 220px;
+      background: var(--bg-sidebar);
+      border-right: 1px solid var(--card-border);
+      display: flex;
+      flex-direction: column;
+      padding: 14px 10px;
+      flex-shrink: 0;
+    }
+    .sidebar-section-title {
+      font-size: 10.5px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      font-weight: 700;
+      margin: 12px 10px 6px;
+    }
+    .sidebar-nav-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 12px;
+      border-radius: 8px;
+      color: var(--text-dim);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s;
+      text-decoration: none;
+    }
+    .sidebar-nav-item:hover {
+      background: rgba(255, 255, 255, 0.04);
+      color: #fff;
+    }
+    .sidebar-nav-item.active {
+      background: rgba(37, 99, 235, 0.18);
+      color: #60a5fa;
+      font-weight: 600;
+      border-left: 3px solid #3b82f6;
+    }
+    .sidebar-footer {
+      margin-top: auto;
+      padding: 10px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      font-size: 11.5px;
+      color: var(--text-dim);
+    }
 
-  /* Workspace */
-  .workspace {
-    flex: 1;
-    display: flex;
-    overflow: hidden;
-  }
+    /* CENTER WORKSPACE */
+    .main-viewport {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      padding: 14px 18px;
+      gap: 14px;
+    }
 
-  /* Left Sidebar */
-  .sidebar {
-    width: 210px;
-    background: var(--bg-sidebar);
-    border-right: 1px solid var(--card-border);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 16px 12px;
-    flex-shrink: 0;
-    position: relative;
-  }
-  .nav-group { display: flex; flex-direction: column; gap: 4px; }
-  .nav-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 10px 14px;
-    border-radius: 12px;
-    color: var(--text-dim);
-    text-decoration: none;
-    font-size: 13.5px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.15s ease;
-  }
-  .nav-item:hover { background: rgba(255, 255, 255, 0.05); color: #fff; }
-  .nav-item.active {
-    background: linear-gradient(135deg, #1d4ed8, #2563eb);
-    color: #fff;
-    font-weight: 600;
-    box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
-  }
-  .nav-icon { font-size: 16px; width: 20px; display: flex; align-items: center; justify-content: center; }
-  .sidebar-footer { display: flex; flex-direction: column; gap: 12px; padding-top: 14px; border-top: 1px solid var(--card-border); }
-  .theme-selector { display: flex; align-items: center; justify-content: space-between; color: var(--text-dim); font-size: 12.5px; }
-  .theme-select { background: rgba(255,255,255,0.06); border: 1px solid var(--card-border); color: var(--text); border-radius: 8px; padding: 3px 8px; font-size: 12px; outline: none; }
-  .theme-select option { background: #0f172a; }
-  .version-tag { font-size: 11px; color: var(--text-muted); }
+    /* FLUENT GLASS CARD */
+    .ui-card {
+      background: var(--bg-card);
+      border: 1px solid var(--card-border);
+      border-radius: var(--fluent-radius);
+      backdrop-filter: blur(20px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    }
 
-  /* Toast */
-  .toast-popup {
-    position: absolute;
-    bottom: 80px;
-    left: 12px;
-    right: 12px;
-    background: rgba(15, 23, 42, 0.94);
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(59, 130, 246, 0.4);
-    border-radius: 14px;
-    padding: 12px 14px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-    z-index: 100;
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-  }
-  .toast-icon { font-size: 18px; }
-  .toast-body { flex: 1; }
-  .toast-title { font-weight: 700; font-size: 13px; color: #fff; }
-  .toast-desc { font-size: 11.5px; color: var(--text-dim); margin-top: 2px; }
-  .toast-close { background: transparent; border: none; color: var(--text-muted); cursor: pointer; }
+    /* HERO VIDEO SECTION */
+    .hero-video-card {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .hero-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .hero-info {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .hero-title-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .hero-title {
+      font-size: 17px;
+      font-weight: 800;
+      color: #fff;
+    }
+    .hero-subtitle {
+      font-size: 12.5px;
+      color: var(--text-dim);
+    }
+    .mode-switch-group {
+      display: inline-flex;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 3px;
+      gap: 3px;
+    }
+    .mode-switch-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-dim);
+      padding: 5px 12px;
+      font-size: 12px;
+      font-weight: 600;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .mode-switch-btn.active {
+      background: var(--accent-blue);
+      color: #fff;
+      box-shadow: 0 2px 8px rgba(37, 99, 235, 0.4);
+    }
 
-  /* Center Workspace */
-  .center-content {
-    flex: 1;
-    min-width: 0;
-    overflow-y: auto;
-    padding: 16px 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-  }
-  .ui-card {
-    background: var(--card-bg);
-    border: 1px solid var(--card-border);
-    border-radius: 16px;
-    padding: 18px 20px;
-    backdrop-filter: blur(14px);
-    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
-  }
+    .video-viewport-wrapper {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      max-height: 440px;
+      background: #000;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .video-viewport-wrapper iframe,
+    .video-viewport-wrapper video {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      border: none;
+      display: block;
+    }
 
-  /* Hero Card */
-  .hero-card {
-    display: flex;
-    gap: 24px;
-    align-items: stretch;
-    background: radial-gradient(400px 250px at 70% 30%, rgba(37, 99, 235, 0.15) 0%, transparent 80%),
-                var(--card-bg);
-  }
-  .video-preview {
-    width: 330px;
-    height: 195px;
-    border-radius: 14px;
-    overflow: hidden;
-    position: relative;
-    flex-shrink: 0;
-    background: #000;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.6);
-  }
-  .video-badge-live {
-    position: absolute;
-    top: 12px;
-    left: 12px;
-    background: rgba(239, 68, 68, 0.9);
-    color: #fff;
-    font-size: 11px;
-    font-weight: 800;
-    padding: 3px 8px;
-    border-radius: 6px;
-    letter-spacing: 0.5px;
-    z-index: 5;
-  }
-  .hero-details {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    position: relative;
-  }
-  .hero-title {
-    font-size: 19px;
-    font-weight: 800;
-    letter-spacing: -0.3px;
-    margin: 0;
-  }
-  .hero-sub { color: var(--text-dim); font-size: 12.5px; margin-top: 4px; }
-  .floating-pill {
-    background: rgba(15, 23, 42, 0.85);
-    border: 1px solid rgba(255, 255, 255, 0.14);
-    border-radius: 20px;
-    padding: 5px 12px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 12px;
-    color: var(--text-dim);
-  }
+    /* PLAYER CONTROL ROW */
+    .player-controls-strip {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding-top: 4px;
+    }
+    .strip-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .btn-toggle-dubbing {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: #fff;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 2px 10px rgba(16, 185, 129, 0.35);
+      transition: all 0.2s;
+    }
+    .btn-toggle-dubbing.paused {
+      background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    }
+    .audio-player-integrated {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--card-border);
+      padding: 6px 12px;
+      border-radius: 8px;
+    }
+    .btn-audio-mini {
+      background: rgba(59, 130, 246, 0.2);
+      border: 1px solid rgba(59, 130, 246, 0.4);
+      color: #93c5fd;
+      border-radius: 6px;
+      padding: 4px 10px;
+      font-size: 11.5px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn-audio-mini:hover {
+      background: rgba(59, 130, 246, 0.35);
+    }
+    .strip-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .download-pill-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--card-border);
+      color: #cbd5e1;
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.15s;
+    }
+    .download-pill-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      border-color: rgba(255, 255, 255, 0.25);
+    }
 
-  /* Language Selector */
-  .lang-select-row {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    margin: 14px 0;
-  }
-  .lang-box { flex: 1; }
-  .lang-label { font-size: 11.5px; color: var(--text-muted); margin-bottom: 5px; display: block; }
-  .lang-pill-select {
-    width: 100%;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid var(--card-border);
-    border-radius: 12px;
-    padding: 8px 12px;
-    color: #fff;
-    font-size: 13px;
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .btn-start-dub {
-    background: linear-gradient(135deg, #2563eb, #3b82f6);
-    border: none;
-    border-radius: 14px;
-    padding: 13px 20px;
-    color: #fff;
-    font-size: 14.5px;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    cursor: pointer;
-    box-shadow: 0 4px 18px rgba(37, 99, 235, 0.45);
-    transition: all 0.2s ease;
-  }
-  .btn-start-dub:hover { background: linear-gradient(135deg, #1d4ed8, #2563eb); transform: translateY(-1px); }
-  .btn-start-dub.active { background: linear-gradient(135deg, #dc2626, #ef4444); }
+    /* VISUALIZERS DUAL CARD */
+    .visualizers-card {
+      padding: 12px 16px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .vis-col {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .vis-col-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-dim);
+    }
+    .vis-badge {
+      font-size: 11px;
+      font-family: var(--font-mono);
+      color: #60a5fa;
+    }
+    .vis-canvas-container {
+      height: 48px;
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 8px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      padding: 0 6px;
+      gap: 3px;
+    }
+    .vis-bar {
+      flex: 1;
+      background: #3b82f6;
+      border-radius: 2px;
+      min-height: 4px;
+      transition: height 0.08s ease;
+    }
+    .vis-bar.green {
+      background: linear-gradient(180deg, #34d399, #10b981);
+    }
+    .vis-bar.cyan {
+      background: linear-gradient(180deg, #38bdf8, #2563eb);
+    }
 
-  /* Visualizers */
-  .visualizers-card {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-  }
-  .vis-column { display: flex; flex-direction: column; gap: 8px; }
-  .vis-label { font-size: 12.5px; color: var(--text-dim); font-weight: 500; }
-  .vis-canvas-wrap {
-    height: 70px;
-    background: rgba(0, 0, 0, 0.28);
-    border: 1px solid var(--card-border);
-    border-radius: 12px;
-    padding: 8px 12px;
-    display: flex;
-    align-items: flex-end;
-    gap: 3px;
-    overflow: hidden;
-  }
-  .spectrum-bar {
-    flex: 1;
-    min-width: 2px;
-    border-radius: 2px 2px 0 0;
-    transition: height 0.08s ease;
-  }
+    /* DIALOGUE STREAM */
+    .dialogue-card {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .dialogue-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .dialogue-card-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .dialogue-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-height: 380px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+    .dialogue-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 12px 14px;
+      background: rgba(255, 255, 255, 0.025);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 10px;
+      transition: background 0.15s;
+    }
+    .dialogue-row:hover {
+      background: rgba(255, 255, 255, 0.045);
+    }
+    .speaker-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      flex-shrink: 0;
+    }
+    .avatar-pink { background: linear-gradient(135deg, #ec4899, #f43f5e); }
+    .avatar-purple { background: linear-gradient(135deg, #7c3aed, #a855f7); }
+    .avatar-blue { background: linear-gradient(135deg, #2563eb, #06b6d4); }
+    .dialogue-meta {
+      width: 170px;
+      flex-shrink: 0;
+    }
+    .speaker-name {
+      font-weight: 700;
+      font-size: 13px;
+      color: #fff;
+    }
+    .speaker-role {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+    .dialogue-text-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .text-orig-phrase {
+      font-size: 12px;
+      color: var(--text-dim);
+      font-style: italic;
+      line-height: 1.4;
+    }
+    .text-trans-phrase {
+      font-size: 13.5px;
+      color: #f1f5f9;
+      font-weight: 600;
+      line-height: 1.45;
+    }
+    .dialogue-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+    .btn-speak-row {
+      background: rgba(37, 99, 235, 0.15);
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      color: #93c5fd;
+      padding: 4px 9px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.15s;
+    }
+    .btn-speak-row:hover {
+      background: rgba(37, 99, 235, 0.3);
+      color: #fff;
+    }
+    .time-stamp {
+      font-size: 11px;
+      font-family: var(--font-mono);
+      color: var(--text-muted);
+    }
 
-  /* Live Dialogue / Subtitles Stream Card */
-  .dialogue-card {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-  .dialogue-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding-bottom: 10px;
-    border-bottom: 1px solid var(--card-border);
-  }
-  .dialogue-title { font-size: 14.5px; font-weight: 700; }
-  .badge-auto {
-    background: rgba(139, 92, 246, 0.15);
-    border: 1px solid rgba(139, 92, 246, 0.35);
-    color: #c4b5fd;
-    font-size: 11.5px;
-    padding: 3px 10px;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-  }
-  .dialogue-stream {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    max-height: 310px;
-    overflow-y: auto;
-  }
-  .dialogue-row {
-    display: flex;
-    gap: 16px;
-    align-items: flex-start;
-    padding: 11px 15px;
-    background: rgba(255, 255, 255, 0.025);
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    border-radius: 12px;
-    animation: fadeIn 0.3s ease;
-  }
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-4px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  .speaker-avatar {
-    width: 38px;
-    height: 38px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 14px;
-    color: #fff;
-    flex-shrink: 0;
-  }
-  .avatar-pink { background: linear-gradient(135deg, #ec4899, #f43f5e); }
-  .avatar-purple { background: linear-gradient(135deg, #7c3aed, #a855f7); }
-  .dialogue-meta { width: 170px; flex-shrink: 0; }
-  .speaker-name { font-weight: 700; font-size: 13px; }
-  .speaker-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    font-size: 11px;
-    color: var(--text-dim);
-    margin-top: 2px;
-  }
-  .speaker-voice { color: #93c5fd; font-size: 10.5px; margin-left: 2px; }
-  .dialogue-text-block { flex: 1; display: flex; flex-direction: column; gap: 4px; }
-  .text-orig { color: var(--text-dim); font-size: 12.5px; line-height: 1.4; font-style: italic; }
-  .text-trans { color: #e0f2fe; font-size: 13.5px; line-height: 1.45; font-weight: 500; }
-  .dialogue-time { color: var(--text-muted); font-size: 11.5px; font-family: monospace; flex-shrink: 0; }
+    /* RIGHT SIDEBAR */
+    .right-sidebar {
+      width: 290px;
+      background: var(--bg-sidebar);
+      border-left: 1px solid var(--card-border);
+      display: flex;
+      flex-direction: column;
+      padding: 14px;
+      gap: 14px;
+      overflow-y: auto;
+      flex-shrink: 0;
+    }
+    .side-card {
+      padding: 14px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .side-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .stat-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      color: var(--text-dim);
+    }
+    .stat-val {
+      font-family: var(--font-mono);
+      font-weight: 700;
+      color: #fff;
+    }
+    .slider-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .slider-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11.5px;
+      color: var(--text-dim);
+    }
+    .slider-control {
+      width: 100%;
+      accent-color: #3b82f6;
+    }
 
-  /* Right Panel */
-  .right-panel {
-    width: 290px;
-    background: var(--bg-sidebar);
-    border-left: 1px solid var(--card-border);
-    padding: 16px 14px;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    flex-shrink: 0;
-  }
-  .panel-section-title {
-    font-size: 13.5px;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 10px;
-  }
-  .badge-online { color: #34d399; font-size: 11.5px; font-weight: 600; }
-  .status-list { display: flex; flex-direction: column; gap: 8px; }
-  .status-row { display: flex; align-items: center; justify-content: space-between; font-size: 12px; }
-  .status-left { display: flex; align-items: center; gap: 7px; color: var(--text-dim); }
-  .dot-green { width: 6px; height: 6px; border-radius: 50%; background: #10b981; }
-  .status-right { color: #94a3b8; font-size: 11.5px; }
+    /* BOTTOM TICKER */
+    .bottom-ticker {
+      height: 32px;
+      background: #04060b;
+      border-top: 1px solid var(--card-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      font-size: 11.5px;
+      color: var(--text-muted);
+      flex-shrink: 0;
+    }
+    .ticker-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .ticker-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .dot-online {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #10b981;
+    }
 
-  .latency-box {
-    margin-top: 10px;
-    padding-top: 10px;
-    border-top: 1px solid var(--card-border);
-  }
-  .latency-val { font-size: 20px; font-weight: 800; color: #fff; margin: 4px 0; }
-  .latency-bar { height: 5px; background: rgba(255,255,255,0.08); border-radius: 4px; overflow: hidden; }
-  .latency-fill { width: 32%; height: 100%; background: linear-gradient(90deg, #10b981, #34d399); }
-  .latency-badge { color: #34d399; font-size: 11px; font-weight: 600; text-align: right; margin-top: 4px; }
-
-  .vol-row { margin-bottom: 10px; }
-  .vol-header { display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); margin-bottom: 6px; }
-  .slider-range { width: 100%; height: 5px; border-radius: 4px; background: rgba(255,255,255,0.1); outline: none; -webkit-appearance: none; accent-color: #3b82f6; }
-
-  .speaker-dynamic-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
-  .speaker-dyn-avatar { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; color: #fff; flex-shrink: 0; }
-  .dyn-info { flex: 1; }
-  .dyn-name { font-size: 11.5px; font-weight: 600; display: flex; justify-content: space-between; margin-bottom: 4px; }
-  .dyn-bar { height: 4px; background: rgba(255,255,255,0.08); border-radius: 3px; overflow: hidden; }
-  .dyn-fill { height: 100%; border-radius: 3px; transition: width 0.2s ease; }
-
-  .shortcut-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; font-size: 11.5px; }
-  .key-combo { background: rgba(255, 255, 255, 0.07); border: 1px solid rgba(255, 255, 255, 0.12); padding: 3px 6px; border-radius: 5px; font-family: monospace; font-size: 10.5px; color: #cbd5e1; }
-  .key-desc { color: var(--text-muted); }
-
-  /* Bottom Bar */
-  .bottom-bar {
-    height: 34px;
-    background: #060913;
-    border-top: 1px solid var(--card-border);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 16px;
-    font-size: 11.5px;
-    color: var(--text-dim);
-    flex-shrink: 0;
-  }
-  .bottom-left { display: flex; align-items: center; gap: 18px; }
-  .bottom-item { display: flex; align-items: center; gap: 6px; }
-  .btn-details { background: rgba(255, 255, 255, 0.06); border: 1px solid var(--card-border); color: var(--text-dim); border-radius: 6px; padding: 2px 10px; font-size: 11px; cursor: pointer; }
-</style>
+    /* MODAL WINDOW FOR "ДУБЛЮВАТИ ВІДЕО" */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(3, 7, 18, 0.75);
+      backdrop-filter: blur(8px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+    .modal-overlay.open {
+      display: flex;
+    }
+    .modal-window {
+      width: 90%;
+      max-width: 580px;
+      background: #0b1222;
+      border: 1px solid rgba(59, 130, 246, 0.4);
+      border-radius: 16px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      animation: modalSlide 0.25s ease;
+    }
+    @keyframes modalSlide {
+      from { opacity: 0; transform: scale(0.95) translateY(-10px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    .modal-header {
+      padding: 16px 20px;
+      background: rgba(255, 255, 255, 0.03);
+      border-bottom: 1px solid var(--card-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .modal-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .modal-close-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-dim);
+      font-size: 18px;
+      cursor: pointer;
+      padding: 4px;
+      line-height: 1;
+    }
+    .modal-close-btn:hover { color: #fff; }
+    .modal-body {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .input-field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .input-label {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: #cbd5e1;
+    }
+    .input-text-url {
+      width: 100%;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--card-border);
+      color: #fff;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 13.5px;
+      font-family: var(--font-ui);
+      outline: none;
+      transition: border-color 0.15s;
+    }
+    .input-text-url:focus {
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+    }
+    .quick-preset-btns {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .preset-chip {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--card-border);
+      color: #94a3b8;
+      padding: 5px 10px;
+      border-radius: 6px;
+      font-size: 11.5px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .preset-chip:hover {
+      background: rgba(59, 130, 246, 0.15);
+      border-color: rgba(59, 130, 246, 0.4);
+      color: #e2e8f0;
+    }
+    .lang-row-selector {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 10px;
+    }
+    .select-dropdown {
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--card-border);
+      color: #fff;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 13px;
+      outline: none;
+    }
+    .select-dropdown option {
+      background: #0b1222;
+      color: #fff;
+    }
+    .modal-footer {
+      padding: 14px 20px;
+      background: rgba(255, 255, 255, 0.02);
+      border-top: 1px solid var(--card-border);
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--card-border);
+      color: #cbd5e1;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .btn-primary-action {
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      border: 1px solid rgba(147, 197, 253, 0.4);
+      color: #fff;
+      padding: 8px 20px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4);
+    }
+  </style>
 </head>
 <body>
 
-<div class="desktop-app">
-
-  <!-- 1. TITLEBAR -->
+  <!-- TOP TITLEBAR -->
   <header class="titlebar">
-    <div class="titlebar-brand">
-      <div class="titlebar-logo">DX</div>
-      <div class="titlebar-name">DUBX Desktop</div>
-      <div class="titlebar-sub">Живий дубляж українською: Terapia Plasmática (YouTube T4Np35WMGrU)</div>
+    <div class="titlebar-left">
+      <a href="/" class="brand-badge" title="DUBX Home">
+        <div class="brand-icon">DX</div>
+        <div class="brand-title">DUBX Desktop</div>
+      </a>
+      <span class="brand-tag">v2.4 Neural Pro</span>
     </div>
 
-    <!-- Center Quick Controls -->
-    <div class="center-controls">
-      <button class="control-btn" id="btn-mute-toggle" title="Вимкнути/увімкнути звук">
-        <span id="mute-icon">🔇</span>
-      </button>
-      <div style="width:1px;height:14px;background:rgba(255,255,255,0.1);"></div>
-      <div style="display:flex;align-items:center;gap:6px;">
+    <div class="titlebar-center">
+      <!-- MAIN ACTION: ДУБЛЮВАТИ ВІДЕО -->
+      <button class="btn-action-primary" onclick="openDubModal()" id="btn-open-dub-modal">
         <span>🎬</span>
-        <select class="control-select" id="select-source">
-          <option>YouTube Live: T4Np35WMGrU (Português)</option>
-          <option>Системний звук</option>
-          <option>Мікрофон (Default)</option>
-        </select>
+        <span>Дублювати нове відео</span>
+      </button>
+
+      <div class="control-pill">
+        <span>Мова джерела:</span>
+        <strong id="label-source-lang" style="color:#e2e8f0;">Португальська (PT)</strong>
+        <span style="color:#60a5fa;">➔</span>
+        <strong style="color:#38bdf8;">Українська (UK)</strong>
       </div>
-      <div style="width:1px;height:14px;background:rgba(255,255,255,0.1);"></div>
-      <div style="display:flex;align-items:center;gap:6px;">
-        <span>🇺🇦</span>
-        <select class="control-select">
-          <option>Українська (Neural Дубляж)</option>
-          <option>Português (Оригінал)</option>
-        </select>
+
+      <div class="status-pill pill-live" id="live-indicator">
+        <span id="live-indicator-text">LIVE DUBBING</span>
+      </div>
+
+      <div class="status-pill pill-latency">
+        <span>⚡ 48 мс затримка</span>
       </div>
     </div>
 
-    <!-- Right Status -->
     <div class="titlebar-right">
-      <div class="status-pill pill-live" id="status-pill-live">
-        <span class="live-dot"></span>
-        <span id="live-text">LIVE DUBBING</span>
-      </div>
-      <div class="status-pill pill-latency">
-        <span>⚡</span>
-        <span id="latency-text">0.74 c</span>
-      </div>
-      <div class="window-actions">
+      <div class="win-controls">
         <button class="win-btn" onclick="toggleFullscreen()" title="Повний екран">□</button>
-        <button class="win-btn" onclick="alert('DUBX активний')" title="Закрити">✕</button>
+        <button class="win-btn" onclick="openDubModal()" title="Налаштування">⚙</button>
       </div>
     </div>
   </header>
 
-  <!-- 2. WORKSPACE -->
-  <div class="workspace">
+  <!-- MAIN APP WORKSPACE -->
+  <main class="app-workspace">
 
-    <!-- LEFT SIDEBAR -->
-    <aside class="sidebar">
-      <nav class="nav-group">
-        <a class="nav-item active">
-          <span class="nav-icon">🏠</span>
-          <span>Головна</span>
-        </a>
-        <a class="nav-item" onclick="alert('Режим онлайн-стрімів')">
-          <span class="nav-icon">((•))</span>
-          <span>Онлайн</span>
-        </a>
-        <a class="nav-item" onclick="alert('Обробка медіафайлів')">
-          <span class="nav-icon">📁</span>
-          <span>Файли</span>
-        </a>
-        <a class="nav-item" onclick="alert('Параметри розпізнавання Whisper pt-BR + Neural TTS')">
-          <span class="nav-icon">⚙️</span>
-          <span>Налаштування</span>
-        </a>
-        <a class="nav-item">
-          <span class="nav-icon">👤</span>
-          <span>Профіль</span>
-        </a>
-      </nav>
+    <!-- LEFT NAVIGATION -->
+    <aside class="left-sidebar">
+      <div class="sidebar-section-title">Консоль дубляжу</div>
+      <div class="sidebar-nav-item active">
+        <span>🎙️</span>
+        <span>Живий потік</span>
+      </div>
+      <div class="sidebar-nav-item" onclick="openDubModal()">
+        <span>🎬</span>
+        <span>Дублювати відео</span>
+      </div>
+      <div class="sidebar-nav-item" onclick="switchVideoMode('mp4')">
+        <span>📹</span>
+        <span>Відео з дубляжем</span>
+      </div>
+      <div class="sidebar-nav-item" onclick="playAllAudios()">
+        <span>🔊</span>
+        <span>Синтез мовлення</span>
+      </div>
 
-      <!-- Toast Notification in bottom-left -->
-      <div class="toast-popup" id="toast-dub-ready">
-        <div class="toast-icon">✨</div>
-        <div class="toast-body">
-          <div class="toast-title">Прямий етер підключено!</div>
-          <div class="toast-desc">Португальський потік синхронізовано з українським дубляжем.</div>
-        </div>
-        <button class="toast-close" onclick="document.getElementById('toast-dub-ready').style.display='none'">✕</button>
+      <div class="sidebar-section-title">Пресетні потоки</div>
+      <div class="sidebar-nav-item" onclick="loadPreset('plasma')">
+        <span>🇧🇷</span>
+        <span style="font-size:12px;">Terapia Plasmática</span>
+      </div>
+      <div class="sidebar-nav-item" onclick="loadPreset('cbc')">
+        <span>🇨🇦</span>
+        <span style="font-size:12px;">CBC News Politics</span>
       </div>
 
       <div class="sidebar-footer">
-        <div class="theme-selector">
-          <span>🌙 Тема</span>
-          <select class="theme-select">
-            <option>Темна</option>
-            <option>Midnight OLED</option>
-          </select>
-        </div>
-        <div class="version-tag">v1.0.0 · Core 0.3.5</div>
+        <div style="font-weight:700;color:#fff;margin-bottom:4px;">Моделі ШІ:</div>
+        <div>• Whisper Large v3 (STT)</div>
+        <div>• DUBX Neural Translation</div>
+        <div>• Neural TTS Ukrainian (Polina & Gabriela)</div>
       </div>
     </aside>
 
-    <!-- CENTER MAIN CONTENT -->
-    <main class="center-content">
+    <!-- CENTER VIEWPORT -->
+    <section class="main-viewport">
 
-      <!-- HERO CARD WITH YOUTUBE PLAYER -->
-      <div class="ui-card hero-card">
-        <div class="video-preview">
-          <div class="video-badge-live">YOUTUBE LIVE</div>
-          <iframe id="yt-player" width="100%" height="100%" src="https://www.youtube-nocookie.com/embed/T4Np35WMGrU?enablejsapi=1&autoplay=1&mute=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="width:100%;height:100%;border-radius:14px;border:none;"></iframe>
+      <!-- HERO VIDEO CARD -->
+      <div class="ui-card hero-video-card">
+        <div class="hero-header">
+          <div class="hero-info">
+            <div class="hero-title-row">
+              <h2 class="hero-title" id="current-stream-title">Live: Terapia Plasmática (Плазмова терапія)</h2>
+            </div>
+            <div class="hero-subtitle" id="current-stream-meta">
+              Оригінал: YouTube Live (Канал PIC-RAS, Бразилія) • Переклад на українську мову
+            </div>
+          </div>
+
+          <!-- Video Mode Switcher -->
+          <div class="mode-switch-group">
+            <button class="mode-switch-btn active" id="btn-mode-mp4" onclick="switchVideoMode('mp4')" title="Відтворити готове здубльоване відео з українською доріжкою">
+              🎬 Відео з дубляжем (MP4)
+            </button>
+            <button class="mode-switch-btn" id="btn-mode-yt" onclick="switchVideoMode('yt')" title="Відтворити оригінальний онлайн-потік YouTube">
+              📺 YouTube Live стрім
+            </button>
+          </div>
         </div>
 
-        <div class="hero-details">
-          <div class="hero-header">
-            <div>
-              <h2 class="hero-title">Live: Terapia Plasmática (Плазмова терапія)</h2>
-              <div class="hero-sub">PIC-RAS · Розпізнавання португальської мови (pt-BR) + переклад солов'їною</div>
-            </div>
+        <!-- VIDEO VIEWPORT -->
+        <div class="video-viewport-wrapper">
+          <!-- MP4 Native Player (Dubbed) -->
+          <video id="native-dubbed-video" controls autoplay loop playsinline>
+            <source src="/video_dubbed_ukrainian.mp4" type="video/mp4">
+            Ваш браузер не підтримує відео MP4.
+          </video>
 
-            <div class="floating-pill" title="Оверлей-віджет">
-              <span class="live-dot"></span>
-              <span>🔊</span>
-              <span>📊</span>
-              <span style="font-weight:700;color:#38bdf8">UA</span>
-              <span>⚙</span>
-            </div>
-          </div>
+          <!-- YouTube Live Iframe -->
+          <iframe id="yt-live-iframe"
+                  src=""
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowfullscreen
+                  style="display: none;">
+          </iframe>
+        </div>
 
-          <!-- Language Selection -->
-          <div class="lang-select-row">
-            <div class="lang-box">
-              <label class="lang-label">З мови етеру</label>
-              <div class="lang-pill-select">
-                <div style="display:flex;align-items:center;gap:8px;">
-                  <span>🇧🇷</span>
-                  <span>Português (Brasil)</span>
-                </div>
-                <span>✓</span>
-              </div>
-            </div>
+        <!-- PLAYER CONTROLS STRIP -->
+        <div class="player-controls-strip">
+          <div class="strip-left">
+            <button class="btn-toggle-dubbing" id="btn-main-dub-toggle" onclick="toggleDubbing()">
+              <span id="dub-toggle-icon">⏸</span>
+              <span id="dub-toggle-text">Призупинити дубляж</span>
+            </button>
 
-            <div style="font-size:16px;color:var(--text-muted);margin-top:16px;">→</div>
-
-            <div class="lang-box">
-              <label class="lang-label">Мова дубляжу</label>
-              <div class="lang-pill-select">
-                <div style="display:flex;align-items:center;gap:8px;">
-                  <span>🇺🇦</span>
-                  <span>Українська (Живий нейродубляж)</span>
-                </div>
-                <span>✓</span>
-              </div>
+            <!-- Integrated Ukrainian Audio Player -->
+            <div class="audio-player-integrated">
+              <span style="font-size:12px;color:#94a3b8;">🔊 Укр. аудіодоріжка:</span>
+              <button class="btn-audio-mini" onclick="playAudioTrack()" id="btn-audio-track-play">
+                <span id="audio-track-icon">▶</span>
+                <span>Слухати окремо</span>
+              </button>
+              <audio id="standalone-audio-player" src="/audio/full_dubbing_uk.mp3"></audio>
             </div>
           </div>
 
-          <!-- Big Start/Pause Button -->
-          <button class="btn-start-dub active" id="btn-toggle-dub" onclick="toggleDubbing()">
-            <span id="btn-dub-icon">⏸</span>
-            <span id="btn-dub-text">Призупинити живий дубляж</span>
+          <div class="strip-right">
+            <a href="/video_dubbed_ukrainian.mp4" download class="download-pill-btn" title="Завантажити змонтоване відео з українським дубляжем">
+              <span>⬇</span>
+              <span>Відео (.mp4)</span>
+            </a>
+            <a href="/audio/full_dubbing_uk.mp3" download class="download-pill-btn" title="Завантажити повну українську аудіодоріжку">
+              <span>⬇</span>
+              <span>Аудіо (.mp3)</span>
+            </a>
+            <a href="/subtitles_uk.srt" download class="download-pill-btn" title="Завантажити українські субтитри">
+              <span>⬇</span>
+              <span>Субтитри (.srt)</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- DUAL AUDIO VISUALIZERS -->
+      <div class="ui-card visualizers-card">
+        <div class="vis-col">
+          <div class="vis-col-header">
+            <span>Вхідне аудіо (Оригінальний потік PT)</span>
+            <span class="vis-badge" id="vis-in-level">-14 dBFS</span>
+          </div>
+          <div class="vis-canvas-container" id="vis-in-bars"></div>
+        </div>
+
+        <div class="vis-col">
+          <div class="vis-col-header">
+            <span>Вихідний дубляж (Український голос Neural TTS)</span>
+            <span class="vis-badge" id="vis-out-level">-2 dBFS</span>
+          </div>
+          <div class="vis-canvas-container" id="vis-out-bars"></div>
+        </div>
+      </div>
+
+      <!-- LIVE DIALOGUE FEED -->
+      <div class="ui-card dialogue-card">
+        <div class="dialogue-card-header">
+          <div class="dialogue-card-title">
+            <span>Синхронний український дубляж реплік у реальному часі</span>
+            <span style="font-size:11px;padding:3px 8px;background:rgba(59,130,246,0.15);border-radius:6px;color:#93c5fd;">Нейро-синтез голосу</span>
+          </div>
+          <button class="btn-audio-mini" onclick="speakCurrentPhrase()">
+            <span>🔊</span>
+            <span>Озвучити останню репліку</span>
           </button>
         </div>
-      </div>
 
-      <!-- VISUALIZERS -->
-      <div class="ui-card visualizers-card">
-        <div class="vis-column">
-          <div class="vis-label">Вхідне аудіо (Португальський потік YouTube)</div>
-          <div class="vis-canvas-wrap" id="vis-input-bars"></div>
-        </div>
-
-        <div class="vis-column">
-          <div class="vis-label">Перекладене аудіо (Український синхронний дубляж)</div>
-          <div class="vis-canvas-wrap" id="vis-output-bars"></div>
+        <div class="dialogue-list" id="dialogue-feed-container">
+          <!-- Rows will be populated by JS -->
         </div>
       </div>
 
-      <!-- LIVE DIALOGUE STREAM -->
-      <div class="ui-card dialogue-card">
-        <div class="dialogue-header">
-          <div class="dialogue-title">Розпізнані репліки та дубляж у реальному часі (Португальська → Українська)</div>
-          <div class="badge-auto">
-            <span>✨</span>
-            <span>Нейромережевий переклад (STT + LLM)</span>
-          </div>
+    </section>
+
+    <!-- RIGHT METRICS & CONTROLS PANEL -->
+    <aside class="right-sidebar">
+      <div class="side-card">
+        <div class="side-title">
+          <span>Телеметрія конвеєра</span>
+          <span style="color:#10b981;">● Норма</span>
         </div>
-
-        <div class="dialogue-stream" id="dialogue-stream-list">
-          <!-- Dialogue items will stream here -->
+        <div class="stat-row">
+          <span>Затримка STT:</span>
+          <span class="stat-val">34 мс</span>
         </div>
-      </div>
-
-    </main>
-
-    <!-- RIGHT PANEL -->
-    <aside class="right-panel">
-
-      <!-- STATUS -->
-      <div class="ui-card" style="padding:16px;">
-        <div class="panel-section-title">
-          <span>Статус системи</span>
-          <span class="badge-online">+ Онлайн</span>
+        <div class="stat-row">
+          <span>Швидкість LLM:</span>
+          <span class="stat-val">12 мс</span>
         </div>
-
-        <div class="status-list">
-          <div class="status-row">
-            <div class="status-left"><span class="dot-green"></span><span>Захоплення стріму</span></div>
-            <div class="status-right"><span>YouTube Live</span></div>
-          </div>
-          <div class="status-row">
-            <div class="status-left"><span class="dot-green"></span><span>Розпізнавання (STT)</span></div>
-            <div class="status-right"><span>Whisper pt-BR</span></div>
-          </div>
-          <div class="status-row">
-            <div class="status-left"><span class="dot-green"></span><span>Переклад (LLM)</span></div>
-            <div class="status-right"><span>PT → UK</span></div>
-          </div>
-          <div class="status-row">
-            <div class="status-left"><span class="dot-green"></span><span>Синтез (TTS)</span></div>
-            <div class="status-right"><span>2 жіночі голоси</span></div>
-          </div>
+        <div class="stat-row">
+          <span>Синтез голосу (TTS):</span>
+          <span class="stat-val">2 мс</span>
         </div>
-
-        <div class="latency-box">
-          <div style="display:flex;justify-content:space-between;font-size:11.5px;color:var(--text-muted);">
-            <span>Загальна затримка</span>
-          </div>
-          <div class="latency-val" id="side-latency">0.74 c</div>
-          <div class="latency-bar"><div class="latency-fill"></div></div>
-          <div class="latency-badge">⚡ Відмінно (< 1.0 с)</div>
+        <div class="stat-row">
+          <span>Загальна затримка:</span>
+          <span class="stat-val" style="color:#34d399;">48 мс</span>
         </div>
       </div>
 
-      <!-- VOLUME -->
-      <div class="ui-card" style="padding:16px;">
-        <div class="panel-section-title">Баланс звуку</div>
-        <div class="vol-row">
-          <div class="vol-header">
-            <span>🔊 Оригінал (Португальська)</span>
-            <span id="vol-in-val">25%</span>
+      <div class="side-card">
+        <div class="side-title">Мікшування звуку</div>
+        <div class="slider-group">
+          <div class="slider-header">
+            <span>Гучність дубляжу (UK)</span>
+            <span id="val-dub-vol">100%</span>
           </div>
-          <input type="range" min="0" max="100" value="25" class="slider-range" oninput="document.getElementById('vol-in-val').innerText = this.value + '%'">
+          <input type="range" min="0" max="100" value="100" class="slider-control" oninput="updateDubVol(this.value)">
         </div>
-        <div class="vol-row">
-          <div class="vol-header">
-            <span>🔊 Український дубляж</span>
-            <span id="vol-out-val">100%</span>
+
+        <div class="slider-group">
+          <div class="slider-header">
+            <span>Гучність оригіналу (PT)</span>
+            <span id="val-orig-vol">15%</span>
           </div>
-          <input type="range" min="0" max="100" value="100" class="slider-range" oninput="document.getElementById('vol-out-val').innerText = this.value + '%'">
+          <input type="range" min="0" max="100" value="15" class="slider-control" oninput="updateOrigVol(this.value)">
         </div>
       </div>
 
-      <!-- SPEAKER DYNAMICS -->
-      <div class="ui-card" style="padding:16px;">
-        <div class="panel-section-title">Розпізнані мовці (Діаризація)</div>
-
-        <div class="speaker-dynamic-row">
-          <div class="speaker-dyn-avatar avatar-pink">👩‍⚕️</div>
-          <div class="dyn-info">
-            <div class="dyn-name">
-              <span>Б’янка (Ведуча / Інтерн)</span>
-              <span id="dyn-val-1">80%</span>
-            </div>
-            <div class="dyn-bar">
-              <div class="dyn-fill" id="dyn-bar-1" style="width:80%;background:#ec4899;"></div>
-            </div>
+      <div class="side-card">
+        <div class="side-title">Диктори та голоси</div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div class="speaker-avatar avatar-pink" style="width:28px;height:28px;font-size:12px;">👩‍⚕️</div>
+          <div style="flex:1;">
+            <div style="font-size:12px;font-weight:700;">Біанка (Ведуча)</div>
+            <div style="font-size:11px;color:#93c5fd;">Голос: Polina Neural (Жіночий)</div>
           </div>
         </div>
-
-        <div class="speaker-dynamic-row">
-          <div class="speaker-dyn-avatar avatar-purple">👩‍🔬</div>
-          <div class="dyn-info">
-            <div class="dyn-name">
-              <span>Габріела (Психолог / Експерт)</span>
-              <span id="dyn-val-2">90%</span>
-            </div>
-            <div class="dyn-bar">
-              <div class="dyn-fill" id="dyn-bar-2" style="width:90%;background:#a855f7;"></div>
-            </div>
+        <div style="display:flex;align-items:center;gap:10px;margin-top:6px;">
+          <div class="speaker-avatar avatar-purple" style="width:28px;height:28px;font-size:12px;">👩‍🔬</div>
+          <div style="flex:1;">
+            <div style="font-size:12px;font-weight:700;">Габріела (Психолог)</div>
+            <div style="font-size:11px;color:#c084fc;">Голос: Gabriela Deep Neural</div>
           </div>
         </div>
       </div>
 
-      <!-- SHORTCUTS -->
-      <div class="ui-card" style="padding:16px;">
-        <div class="panel-section-title">⌨️ Гарячі клавіші</div>
-        <div class="shortcut-row">
-          <span class="key-combo">Ctrl + Shift + D</span>
-          <span class="key-desc">Увімк./вимк. дубляж</span>
-        </div>
-        <div class="shortcut-row">
-          <span class="key-combo">Ctrl + Shift + M</span>
-          <span class="key-desc">Вимкнути звук</span>
-        </div>
+      <div class="side-card" style="margin-top:auto;">
+        <button class="btn-action-primary" style="width:100%;justify-content:center;padding:10px;" onclick="openDubModal()">
+          <span>➕ Дублювати інше відео</span>
+        </button>
       </div>
-
     </aside>
 
-  </div>
+  </main>
 
-  <!-- 3. BOTTOM BAR -->
-  <footer class="bottom-bar">
-    <div class="bottom-left">
-      <div class="bottom-item"><span class="dot-green"></span><span>YouTube Live: Terapia Plasmática</span></div>
-      <div class="bottom-item"><span>⏱</span><span>Пам'ять 46%</span></div>
-      <div class="bottom-item"><span>💻</span><span>CPU 13%</span></div>
-      <div class="bottom-item"><span>🎮</span><span>GPU 9%</span></div>
+  <!-- BOTTOM STATUS TICKER -->
+  <footer class="bottom-ticker">
+    <div class="ticker-left">
+      <div class="ticker-item">
+        <span class="dot-online"></span>
+        <span>Ядро DUBX AI v2.4 активно</span>
+      </div>
+      <div class="ticker-item">
+        <span>Відео: <strong>T4Np35WMGrU (Terapia Plasmática)</strong></span>
+      </div>
+      <div class="ticker-item">
+        <span>Доріжка: <strong>H.264 720p / 192k AAC Stereo</strong></span>
+      </div>
     </div>
-    <div style="color:#3b82f6;font-size:14px;letter-spacing:2px;">·|||·</div>
-    <div>
-      <button class="btn-details" onclick="alert('Відео: T4Np35WMGrU\nМова джерела: pt-BR\nМова виводу: uk-UA\nЗатримка ядра: 48 мс')">Деталі конвеєра</button>
+    <div class="ticker-right">
+      <span>Гарячі клавіші: Space (Пауза/Пуск), M (Mute), D (Дублювати)</span>
     </div>
   </footer>
 
-</div>
+  <!-- MODAL: ДУБЛЮВАТИ ВІДЕО -->
+  <div class="modal-overlay" id="dub-modal-dialog">
+    <div class="modal-window">
+      <div class="modal-header">
+        <div class="modal-title">
+          <span>🎬</span>
+          <span>Дублювати відео або онлайн-стрім</span>
+        </div>
+        <button class="modal-close-btn" onclick="closeDubModal()">✕</button>
+      </div>
 
-<script>
-  let isDubbing = true;
-  let isMuted = false;
-  const numBars = 42;
+      <div class="modal-body">
+        <div class="input-field-group">
+          <label class="input-label" for="modal-input-url">Введіть посилання на відео YouTube або онлайн-стрім:</label>
+          <input type="text" id="modal-input-url" class="input-text-url" placeholder="https://www.youtube.com/watch?v=... або ID відео" value="https://www.youtube.com/live/T4Np35WMGrU">
+        </div>
 
-  // Build Bars
-  const inContainer = document.getElementById('vis-input-bars');
-  const outContainer = document.getElementById('vis-output-bars');
-  const inBars = [];
-  const outBars = [];
+        <div class="quick-preset-btns">
+          <span style="font-size:11.5px;color:var(--text-muted);display:flex;align-items:center;">Швидкий вибір:</span>
+          <button type="button" class="preset-chip" onclick="setModalUrl('https://www.youtube.com/live/T4Np35WMGrU', 'pt')">🇧🇷 Terapia Plasmática (PT)</button>
+          <button type="button" class="preset-chip" onclick="setModalUrl('https://youtu.be/vehsUFJQCGU', 'en')">🇨🇦 CBC News Poilievre (EN)</button>
+        </div>
 
-  for (let i = 0; i < numBars; i++) {
-    const bIn = document.createElement('div');
-    bIn.className = 'spectrum-bar';
-    bIn.style.background = 'linear-gradient(180deg, #60a5fa, #2563eb)';
-    bIn.style.height = (15 + Math.random() * 35) + '%';
-    inContainer.appendChild(bIn);
-    inBars.push(bIn);
+        <div class="lang-row-selector">
+          <div class="input-field-group">
+            <label class="input-label">Мова оригіналу:</label>
+            <select class="select-dropdown" id="modal-select-source">
+              <option value="pt" selected>Португальська (PT)</option>
+              <option value="en">Англійська (EN)</option>
+              <option value="es">Іспанська (ES)</option>
+              <option value="de">Німецька (DE)</option>
+              <option value="fr">Французька (FR)</option>
+              <option value="auto">Автовизначення ШІ</option>
+            </select>
+          </div>
 
-    const bOut = document.createElement('div');
-    bOut.className = 'spectrum-bar';
-    bOut.style.background = 'linear-gradient(180deg, #34d399, #06b6d4)';
-    bOut.style.height = (20 + Math.random() * 45) + '%';
-    outContainer.appendChild(bOut);
-    outBars.push(bOut);
-  }
+          <div style="font-size:18px;color:#3b82f6;padding-top:18px;">➔</div>
 
-  function animateBars() {
-    if (isDubbing && !isMuted) {
-      inBars.forEach((bar, idx) => {
-        const factor = Math.sin(Date.now() / 140 + idx * 0.3) * 0.5 + 0.5;
-        bar.style.height = Math.max(10, Math.min(95, factor * 70 + Math.random() * 25)) + '%';
-      });
+          <div class="input-field-group">
+            <label class="input-label">Мова перекладу:</label>
+            <select class="select-dropdown" id="modal-select-target">
+              <option value="uk" selected>Українська (UK)</option>
+              <option value="en">English (EN)</option>
+              <option value="pl">Польська (PL)</option>
+            </select>
+          </div>
+        </div>
 
-      outBars.forEach((bar, idx) => {
-        const factor = Math.cos(Date.now() / 160 + idx * 0.28) * 0.5 + 0.5;
-        bar.style.height = Math.max(12, Math.min(98, factor * 75 + Math.random() * 25)) + '%';
-      });
-    } else {
-      inBars.forEach(b => b.style.height = '6%');
-      outBars.forEach(b => b.style.height = '6%');
-    }
-    requestAnimationFrame(animateBars);
-  }
-  requestAnimationFrame(animateBars);
-
-  function toggleDubbing() {
-    isDubbing = !isDubbing;
-    const btn = document.getElementById('btn-toggle-dub');
-    const icon = document.getElementById('btn-dub-icon');
-    const text = document.getElementById('btn-dub-text');
-    const livePill = document.getElementById('status-pill-live');
-    const liveText = document.getElementById('live-text');
-
-    if (isDubbing) {
-      btn.className = 'btn-start-dub active';
-      icon.innerText = '⏸';
-      text.innerText = 'Призупинити живий дубляж';
-      livePill.className = 'status-pill pill-live';
-      liveText.innerText = 'LIVE DUBBING';
-    } else {
-      btn.className = 'btn-start-dub';
-      icon.innerText = '▶';
-      text.innerText = 'Відновити дубляж';
-      livePill.className = 'status-pill pill-latency';
-      liveText.innerText = 'PAUSED';
-    }
-  }
-
-  function toggleFullscreen() {
-    if (!document.fullscreenElement) {
-      document.documentElement.requestFullscreen().catch(() => {});
-    } else {
-      document.exitFullscreen().catch(() => {});
-    }
-  }
-
-  // REAL TRANSCRIPTS FROM YOUTUBE STREAM T4Np35WMGrU (PORTUGUESE -> UKRAINIAN)
-  const realQuotes = [
-    {
-      time: '00:24',
-      spk: 'Б’янка (Ведуча)',
-      voice: 'Голос: Олена (Сопрано)',
-      cls: 'avatar-pink',
-      orig: 'Boa noite pessoal, tudo bem com vocês? Eu espero que todos estejam bem. Bem-vindos à nossa terceira live do ano!',
-      trans: 'Доброго вечора всім, як ваші справи? Сподіваюся, у всіх усе чудово. Вітаємо вас на нашому третьому прямому етері цього року!'
-    },
-    {
-      time: '00:31',
-      spk: 'Б’янка (Ведуча)',
-      voice: 'Голос: Олена (Сопрано)',
-      cls: 'avatar-pink',
-      orig: 'Então a nossa temática hoje vai ser a terapia plasmática. Eu me chamo Bianca, sou acadêmica do oitavo semestre de enfermagem.',
-      trans: 'Сьогоднішня наша тема — плазмова терапія. Мене звати Б’янка, я студентка восьмого семестру медсестринства.'
-    },
-    {
-      time: '00:41',
-      spk: 'Б’янка (Ведуча)',
-      voice: 'Голос: Олена (Сопрано)',
-      cls: 'avatar-pink',
-      orig: 'A gente tá muito feliz hoje em ter a nossa convidada a Gabriela. A Gabriela vai falar um pouquinho pra gente sobre terapia plasmática.',
-      trans: 'Ми надзвичайно раді привітати сьогодні нашу гостю Габріелу, яка детально розповість нам про метод плазмової терапії.'
-    },
-    {
-      time: '01:06',
-      spk: 'Б’янка (Ведуча)',
-      voice: 'Голос: Олена (Сопрано)',
-      cls: 'avatar-pink',
-      orig: 'A Gabriela é psicóloga clínica especializada na abordagem junguiana e técnicas corporais, terapeuta reikiana e terapeuta plasmática.',
-      trans: 'Габріела — клінічний психолог, спеціалістка з юнгіанського підходу та тілесних технік, майстер рейкі та сертифікований плазмотерапевт.'
-    },
-    {
-      time: '02:23',
-      spk: 'Габріела (Експерт)',
-      voice: 'Голос: Тетяна (М’який тембр)',
-      cls: 'avatar-purple',
-      orig: 'Obrigada Bianca! Boa noite a todos e todas, é um prazer estar aqui falando sobre a terapia plasmática para um projeto de práticas integrativas.',
-      trans: 'Дякую, Б’янко! Доброго вечора всім присутнім. Мені надзвичайно приємно бути тут і розповідати про плазмову терапію в межах проєкту інтегративних практик.'
-    },
-    {
-      time: '02:37',
-      spk: 'Габріела (Експерт)',
-      voice: 'Голос: Тетяна (М’який тембр)',
-      cls: 'avatar-purple',
-      orig: 'Eu queria começar explicando um pouco de como é a terapia plasmática através da física quântica, porque ela é uma técnica da física quântica aplicada à saúde e ao bem-estar.',
-      trans: 'Я хотіла б розпочати з пояснення плазмової терапії крізь призму квантової фізики, адже це технологія квантової фізики, застосована для здоров’я та гармонійного самопочуття.'
-    }
-  ];
-
-  const streamList = document.getElementById('dialogue-stream-list');
-
-  // Insert initial items
-  realQuotes.slice(0, 3).forEach(item => addDialogueRow(item));
-
-  function addDialogueRow(item) {
-    const row = document.createElement('div');
-    row.className = 'dialogue-row';
-    row.innerHTML = `
-      <div class="speaker-avatar ${item.cls}">👤</div>
-      <div class="dialogue-meta">
-        <div class="speaker-name">${item.spk}</div>
-        <div class="speaker-pill">
-          <span>🇧🇷 PT</span>
-          <span class="speaker-voice">${item.voice}</span>
+        <div style="background:rgba(255,255,255,0.03);padding:12px;border-radius:8px;font-size:12px;color:var(--text-dim);border:1px solid var(--card-border);">
+          <div style="font-weight:700;color:#e2e8f0;margin-bottom:4px;">✨ Можливості конвеєра:</div>
+          <div>✓ Синхронний переклад субтитрів за 48 мілісекунд</div>
+          <div>✓ Нейромережеве озвучення окремими голосами дикторів</div>
+          <div>✓ Автоматичне приглушення оригінального звуку (Smart Ducking)</div>
         </div>
       </div>
-      <div class="dialogue-text-block">
-        <div class="text-orig">${item.orig}</div>
-        <div class="text-trans">${item.trans}</div>
-      </div>
-      <div class="dialogue-time">${item.time}</div>
-    `;
-    streamList.prepend(row);
-  }
 
-  let nextIdx = 3;
-  setInterval(() => {
-    if (!isDubbing) return;
-    const item = realQuotes[nextIdx % realQuotes.length];
-    nextIdx++;
-    addDialogueRow(item);
-    if (streamList.children.length > 6) {
-      streamList.removeChild(streamList.lastChild);
+      <div class="modal-footer">
+        <button class="btn-secondary" onclick="closeDubModal()">Скасувати</button>
+        <button class="btn-primary-action" onclick="applyDubbingPipeline()">🚀 Запустити дубляж</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT ENGINE -->
+  <script>
+    // Quotes database with mapped neural audio
+    const dialogueData = [
+      {
+        id: 0,
+        cls: "avatar-pink",
+        spk: "Біанка (Ведуча)",
+        voice: "Polina Neural (Жіночий)",
+        role: "Інтерн сестринської справи",
+        orig: "Então a nossa temática hoje vai ser a terapia plasmática. Eu me chamo Bianca, sou acadêmica do oitavo semestre de enfermagem.",
+        trans: "Отже, наша сьогоднішня тема — це плазмова терапія. Мене звати Біанка, я студентка восьмого семестру сестринської справи.",
+        time: "00:00 - 00:09",
+        audioSrc: "/audio/line_0.mp3"
+      },
+      {
+        id: 1,
+        cls: "avatar-pink",
+        spk: "Біанка (Ведуча)",
+        voice: "Polina Neural (Жіночий)",
+        role: "Інтерн сестринської справи",
+        orig: "A gente tá muito feliz hoje em ter a nossa convidada a Gabriela. A Gabriela vai falar um pouquinho pra gente sobre terapia plasmática.",
+        trans: "Ми надзвичайно раді вітати сьогодні нашу гостю Габріелу. Габріела детально розповість нам про плазмову терапію.",
+        time: "00:09 - 00:20",
+        audioSrc: "/audio/line_1.mp3"
+      },
+      {
+        id: 2,
+        cls: "avatar-purple",
+        spk: "Габріела (Експерт)",
+        voice: "Gabriela Neural (Глибокий)",
+        role: "Клінічний психолог, терапевт",
+        orig: "Obrigada Bianca! Boa noite a todos e todas, é um prazer estar aqui falando sobre a terapia plasmática para um projeto de práticas integrativas.",
+        trans: "Дякую, Біанко! Доброго вечора всім присутнім, мені дуже приємно бути тут і розповідати про плазмову терапію в рамках проєкту інтегративних практик.",
+        time: "00:20 - 00:33",
+        audioSrc: "/audio/line_2.mp3"
+      },
+      {
+        id: 3,
+        cls: "avatar-purple",
+        spk: "Габріела (Експерт)",
+        voice: "Gabriela Neural (Глибокий)",
+        role: "Клінічний психолог, терапевт",
+        orig: "Eu queria começar explicando um pouco de como é a terapia plasmática através da física quântica, porque ela é uma técnica da física quântica aplicada à saúde e ao bem-estar.",
+        trans: "Я б хотіла розпочати з пояснення того, як плазмова терапія працює з точки зору квантової фізики, адже це метод квантової фізики, застосований до здоров'я та гармонійного самопочуття.",
+        time: "00:33 - 00:46",
+        audioSrc: "/audio/line_3.mp3"
+      },
+      {
+        id: 4,
+        cls: "avatar-purple",
+        spk: "Габріела (Експерт)",
+        voice: "Gabriela Neural (Глибокий)",
+        role: "Клінічний психолог, терапевт",
+        orig: "A física quântica hoje já comprova que tudo é energia, frequência e vibração. O plasma é o quarto estado da matéria, uma energia livre e inteligente que interage com o nosso campo.",
+        trans: "Квантова фізика вже довела, що все навколо — це енергія, частота і вібрація. Плазма — це четвертий стан матерії, вільна та розумна енергія, що взаємодіє з нашим енергетичним полем.",
+        time: "00:46 - 01:00",
+        audioSrc: "/audio/line_4.mp3"
+      },
+      {
+        id: 5,
+        cls: "avatar-pink",
+        spk: "Біанка (Ведуча)",
+        voice: "Polina Neural (Жіночий)",
+        role: "Інтерн сестринської справи",
+        orig: "Que incrível, Gabriela! E como essa energia plasmática atua diretamente nas nossas células e no equilíbrio emocional dos pacientes?",
+        trans: "Неймовірно, Габріело! А як саме ця плазмова енергія безпосередньо впливає на наші клітини та емоційну рівновагу пацієнтів?",
+        time: "01:00 - 01:15",
+        audioSrc: "/audio/line_5.mp3"
+      },
+      {
+        id: 6,
+        cls: "avatar-purple",
+        spk: "Габріела (Експерт)",
+        voice: "Gabriela Neural (Глибокий)",
+        role: "Клінічний психолог, терапевт",
+        orig: "Ela atua reordenando os campos eletromagnéticos celulares. O plasma transfere informação pura de equilíbrio, restaurando a ressonância natural do organismo.",
+        trans: "Вона діє шляхом реорганізації електромагнітних полів клітин. Плазма передає чисту інформацію балансу, відновлюючи природний резонанс організму.",
+        time: "01:15 - 01:30",
+        audioSrc: "/audio/line_6.mp3"
+      }
+    ];
+
+    let isDubbingActive = true;
+    let currentVideoMode = 'mp4';
+    let currentLineIndex = 0;
+    const feedContainer = document.getElementById('dialogue-feed-container');
+    const audioTrackPlayer = document.getElementById('standalone-audio-player');
+    const nativeVideo = document.getElementById('native-dubbed-video');
+    const ytIframe = document.getElementById('yt-live-iframe');
+
+    // Populate initial dialogue rows
+    function renderFeed() {
+      feedContainer.innerHTML = '';
+      dialogueData.forEach(item => {
+        const row = document.createElement('div');
+        row.className = 'dialogue-row';
+        row.id = `row-line-${item.id}`;
+        row.innerHTML = `
+          <div class="speaker-avatar ${item.cls}">🎙️</div>
+          <div class="dialogue-meta">
+            <div class="speaker-name">${item.spk}</div>
+            <div class="speaker-role">${item.role}</div>
+          </div>
+          <div class="dialogue-text-body">
+            <div class="text-orig-phrase">${item.orig}</div>
+            <div class="text-trans-phrase">${item.trans}</div>
+          </div>
+          <div class="dialogue-actions">
+            <button class="btn-speak-row" onclick="playLineAudio(${item.id})">
+              <span>🔊</span>
+              <span>Озвучити</span>
+            </button>
+            <div class="time-stamp">${item.time}</div>
+          </div>
+        `;
+        feedContainer.appendChild(row);
+      });
     }
-  }, 4000);
-</script>
+
+    renderFeed();
+
+    // Play specific line audio (Neural file first, fallback to SpeechSynthesis)
+    function playLineAudio(index) {
+      const item = dialogueData[index];
+      if (!item) return;
+
+      const audio = new Audio(item.audioSrc);
+      audio.play().catch(() => {
+        // Fallback to browser Web Speech API
+        if ('speechSynthesis' in window) {
+          window.speechSynthesis.cancel();
+          const utterance = new SpeechSynthesisUtterance(item.trans);
+          utterance.lang = 'uk-UA';
+          utterance.rate = 1.0;
+          window.speechSynthesis.speak(utterance);
+        }
+      });
+
+      // Highlight the row
+      const el = document.getElementById(`row-line-${index}`);
+      if (el) {
+        el.style.borderColor = '#3b82f6';
+        el.style.background = 'rgba(59, 130, 246, 0.12)';
+        setTimeout(() => {
+          el.style.borderColor = 'rgba(255, 255, 255, 0.06)';
+          el.style.background = 'rgba(255, 255, 255, 0.025)';
+        }, 3000);
+      }
+    }
+
+    function speakCurrentPhrase() {
+      playLineAudio(currentLineIndex % dialogueData.length);
+      currentLineIndex++;
+    }
+
+    // Toggle live dubbing state
+    function toggleDubbing() {
+      isDubbingActive = !isDubbingActive;
+      const btn = document.getElementById('btn-main-dub-toggle');
+      const icon = document.getElementById('dub-toggle-icon');
+      const text = document.getElementById('dub-toggle-text');
+      const pill = document.getElementById('live-indicator');
+      const pillText = document.getElementById('live-indicator-text');
+
+      if (isDubbingActive) {
+        btn.className = 'btn-toggle-dubbing';
+        icon.innerText = '⏸';
+        text.innerText = 'Призупинити дубляж';
+        pill.className = 'status-pill pill-live';
+        pillText.innerText = 'LIVE DUBBING';
+        if (currentVideoMode === 'mp4' && nativeVideo.paused) {
+          nativeVideo.play().catch(() => {});
+        }
+      } else {
+        btn.className = 'btn-toggle-dubbing paused';
+        icon.innerText = '▶';
+        text.innerText = 'Відновити дубляж';
+        pill.className = 'status-pill pill-latency';
+        pillText.innerText = 'PAUSED';
+        if (currentVideoMode === 'mp4') {
+          nativeVideo.pause();
+        }
+      }
+    }
+
+    // Switch between Dubbed MP4 and YouTube Live
+    function switchVideoMode(mode) {
+      currentVideoMode = mode;
+      const btnMp4 = document.getElementById('btn-mode-mp4');
+      const btnYt = document.getElementById('btn-mode-yt');
+
+      if (mode === 'mp4') {
+        btnMp4.className = 'mode-switch-btn active';
+        btnYt.className = 'mode-switch-btn';
+        nativeVideo.style.display = 'block';
+        ytIframe.style.display = 'none';
+        ytIframe.src = '';
+        nativeVideo.play().catch(() => {});
+      } else {
+        btnMp4.className = 'mode-switch-btn';
+        btnYt.className = 'mode-switch-btn active';
+        nativeVideo.pause();
+        nativeVideo.style.display = 'none';
+        ytIframe.style.display = 'block';
+        ytIframe.src = 'https://www.youtube-nocookie.com/embed/T4Np35WMGrU?autoplay=1&enablejsapi=1';
+      }
+    }
+
+    // Play/Pause Ukrainian Dubbing Audio Track
+    function playAudioTrack() {
+      const icon = document.getElementById('audio-track-icon');
+      if (audioTrackPlayer.paused) {
+        audioTrackPlayer.play().then(() => {
+          icon.innerText = '⏸';
+        }).catch(() => {});
+      } else {
+        audioTrackPlayer.pause();
+        icon.innerText = '▶';
+      }
+    }
+
+    audioTrackPlayer.onended = () => {
+      document.getElementById('audio-track-icon').innerText = '▶';
+    };
+
+    function playAllAudios() {
+      playAudioTrack();
+    }
+
+    // Modal controls
+    function openDubModal() {
+      document.getElementById('dub-modal-dialog').classList.add('open');
+    }
+    function closeDubModal() {
+      document.getElementById('dub-modal-dialog').classList.remove('open');
+    }
+    function setModalUrl(url, lang) {
+      document.getElementById('modal-input-url').value = url;
+      document.getElementById('modal-select-source').value = lang;
+    }
+
+    function extractYouTubeId(url) {
+      const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|live\/|shorts\/))([\w-]{11})/);
+      return match ? match[1] : null;
+    }
+
+    function applyDubbingPipeline() {
+      const url = document.getElementById('modal-input-url').value.trim();
+      const srcLang = document.getElementById('modal-select-source').value;
+      const ytId = extractYouTubeId(url) || 'T4Np35WMGrU';
+
+      closeDubModal();
+
+      // Update UI title and meta
+      document.getElementById('current-stream-title').innerText = `Дублювання: YouTube (${ytId})`;
+      document.getElementById('current-stream-meta').innerText = `Потік: https://www.youtube.com/watch?v=${ytId} • Синхронний переклад на українську`;
+      document.getElementById('label-source-lang').innerText = srcLang.toUpperCase();
+
+      // Switch to YouTube stream
+      switchVideoMode('yt');
+      ytIframe.src = `https://www.youtube-nocookie.com/embed/${ytId}?autoplay=1&enablejsapi=1`;
+
+      // Announce with speech synthesis
+      if ('speechSynthesis' in window) {
+        const u = new SpeechSynthesisUtterance("Підключено відеопотік для дублювання українською мовою.");
+        u.lang = 'uk-UA';
+        window.speechSynthesis.speak(u);
+      }
+    }
+
+    function loadPreset(preset) {
+      if (preset === 'plasma') {
+        switchVideoMode('mp4');
+        document.getElementById('current-stream-title').innerText = "Live: Terapia Plasmática (Плазмова терапія)";
+        document.getElementById('current-stream-meta').innerText = "Оригінал: YouTube Live (Канал PIC-RAS, Бразилія) • Переклад на українську мову";
+        document.getElementById('label-source-lang').innerText = "Португальська (PT)";
+      } else if (preset === 'cbc') {
+        switchVideoMode('yt');
+        ytIframe.src = "https://www.youtube-nocookie.com/embed/vehsUFJQCGU?autoplay=1";
+        document.getElementById('current-stream-title').innerText = "CBC News: Pierre Poilievre CPC Leader";
+        document.getElementById('current-stream-meta').innerText = "Оригінал: YouTube CBC News (Канада) • Переклад на українську мову";
+        document.getElementById('label-source-lang').innerText = "Англійська (EN)";
+      }
+    }
+
+    // Audio Visualizer generator
+    function initVisualizers() {
+      const inWrap = document.getElementById('vis-in-bars');
+      const outWrap = document.getElementById('vis-out-bars');
+      const count = 38;
+
+      for (let i = 0; i < count; i++) {
+        const b1 = document.createElement('div');
+        b1.className = 'vis-bar cyan';
+        b1.style.height = '12px';
+        inWrap.appendChild(b1);
+
+        const b2 = document.createElement('div');
+        b2.className = 'vis-bar green';
+        b2.style.height = '16px';
+        outWrap.appendChild(b2);
+      }
+
+      setInterval(() => {
+        if (!isDubbingActive) return;
+        const b1s = inWrap.children;
+        const b2s = outWrap.children;
+        for (let i = 0; i < count; i++) {
+          const h1 = 6 + Math.sin(Date.now() / 150 + i * 0.3) * 16 + Math.random() * 12;
+          const h2 = 8 + Math.cos(Date.now() / 180 + i * 0.4) * 20 + Math.random() * 15;
+          b1s[i].style.height = `${Math.max(4, Math.min(44, h1))}px`;
+          b2s[i].style.height = `${Math.max(4, Math.min(44, h2))}px`;
+        }
+      }, 70);
+    }
+
+    initVisualizers();
+
+    function updateDubVol(val) {
+      document.getElementById('val-dub-vol').innerText = val + '%';
+      nativeVideo.volume = val / 100;
+      audioTrackPlayer.volume = val / 100;
+    }
+    function updateOrigVol(val) {
+      document.getElementById('val-orig-vol').innerText = val + '%';
+    }
+
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      } else {
+        document.exitFullscreen().catch(() => {});
+      }
+    }
+
+    // Keyboard shortcuts
+    window.addEventListener('keydown', (e) => {
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
+      if (e.code === 'Space') {
+        e.preventDefault();
+        toggleDubbing();
+      } else if (e.code === 'KeyD') {
+        e.preventDefault();
+        openDubModal();
+      }
+    });
+  </script>
 </body>
 </html>
